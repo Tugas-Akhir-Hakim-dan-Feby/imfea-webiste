@@ -8,6 +8,7 @@
     'type' => 'button',
     'dismiss' => null,
     'toggle' => null,
+    'target' => null,
 ])
 
 @php
@@ -16,9 +17,10 @@
     } elseif ($url) {
         $href = url($url);
     }
+
+    $attributes = $attributes->class(["btn btn-$color", "btn-$size" => $size])->merge(['type' => !$href ? $type : null, 'href' => $href, 'data-bs-dismiss' => $dismiss, 'data-bs-toggle' => $toggle, 'data-bs-target' => $target]);
 @endphp
 
-<{{ $href ? 'a' : 'button' }} @class(['btn', 'btn-' . $color, 'btn-' . $size]) {{ !$href ? "type=$type" : "href=$href" }}
-    {{ $toggle ? "data-bs-toggle=$toggle" : null }} {{ $dismiss ? "data-bs-dismiss=$dismiss" : null }}>
+<{{ $href ? 'a' : 'button' }} {{ $attributes }}>
     {{ $label ?? $slot }}
     </{{ $href ? 'a' : 'button' }}>

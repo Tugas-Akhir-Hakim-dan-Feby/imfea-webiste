@@ -11,15 +11,21 @@
     'error' => null,
 ])
 
+@php
+    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $error])->merge([
+        'type' => $type,
+        'name' => $id,
+        'id' => $id,
+        'required' => $required,
+        'placeholder' => $placeholder,
+        'value' => $value,
+        'autofocus' => $autofocus,
+    ]);
+@endphp
+
 <div @class([$margin])>
     <x-label :for="$id" :label="$label" />
-    <input type="{{ $type }}" @class([
-        'form-control',
-        $size ? "form-control-$size" : '',
-        $error ? 'is-invalid' : '',
-    ]) {{ $id ? "name=$id id=$id" : '' }}
-        {{ $autofocus ? 'autofocus' : '' }} {{ $required ? 'required' : '' }} placeholder="{{ $placeholder }}"
-        value="{{ $value }}">
+    <input {{ $attributes }}>
     <div class="invalid-feedback">
         {{ $error ?? 'ini wajib diisi!' }}
     </div>

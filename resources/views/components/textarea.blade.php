@@ -3,8 +3,8 @@
     'label' => null,
     'type' => 'text',
     'size' => null,
-    'rows' => '2',
-    'cols' => '2',
+    'rows' => null,
+    'cols' => null,
     'value' => null,
     'margin' => 'mb-3',
     'autofocus' => false,
@@ -13,15 +13,22 @@
     'error' => null,
 ])
 
+@php
+    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $error])->merge([
+        'name' => $id,
+        'id' => $id,
+        'autofocus' => $autofocus,
+        'required' => $required,
+        'placeholder' => $placeholder,
+        'value' => $value,
+        'rows' => $rows,
+        'cols' => $cols,
+    ]);
+@endphp
+
 <div @class([$margin])>
     <x-label :for="$id" :label="$label" />
-    <textarea @class([
-        'form-control',
-        $size ? "form-control-$size" : '',
-        $error ? 'is-invalid' : '',
-    ]) {{ $id ? "name=$id id=$id" : '' }} {{ $autofocus ? 'autofocus' : '' }}
-        {{ $required ? 'required' : '' }} placeholder="{{ $placeholder }}" value="{{ $value }}"
-        rows="{{ $rows }}" cols="{{ $cols }}"></textarea>
+    <textarea {{ $attributes }}></textarea>
     <div class="invalid-feedback">
         {{ $error ?? 'ini wajib diisi!' }}
     </div>

@@ -3,6 +3,10 @@
     'color' => 'primary',
 ])
 
-<span class="badge bg-{{ $color }}">
+@php
+    $attributes = $attributes->class(["badge bg-$color"]);
+@endphp
+
+<span {{ $attributes }}>
     {{ $label ?? $slot }}
 </span>

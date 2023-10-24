@@ -6,7 +6,16 @@
     'xl' => '12',
 ])
 
-<div
-    class="col-xs-{{ $xs }} col-sm-{{ $sm }} col-md-{{ $md }} col-lg-{{ $lg }} col-xl-{{ $xl }}">
+@php
+    $attributes = $attributes->class([
+        "col-xs-$xs" => $xs,
+        "col-sm-$sm" => $sm,
+        "col-md-$md" => $md,
+        "col-lg-$lg" => $lg,
+        "col-xl-$xl" => $xl,
+    ]);
+@endphp
+
+<div {{ $attributes }}>
     {{ $slot }}
 </div>

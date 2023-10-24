@@ -4,8 +4,14 @@
     'class' => null,
 ])
 
+@php
+    $attributes = $attributes->class(["$class"])->merge([
+        'for' => $for,
+    ]);
+@endphp
+
 @if ($label || !$slot->isEmpty())
-    <label for="{{ $for }}" class="{{ $class }}">
+    <label {{ $attributes }}>
         {{ $label ?? $slot }}
     </label>
 @endif
