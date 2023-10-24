@@ -1,5 +1,5 @@
 @props([
-    'id' => '',
+    'id' => null,
     'label' => null,
     'type' => 'text',
     'size' => null,
@@ -17,7 +17,7 @@
         'form-control',
         $size ? "form-control-$size" : '',
         $error ? 'is-invalid' : '',
-    ]) name="{{ $id }}" id="{{ $id }}"
+    ]) {{ $id ? "name=$id id=$id" : '' }}
         {{ $autofocus ? 'autofocus' : '' }} {{ $required ? 'required' : '' }} placeholder="{{ $placeholder }}"
         value="{{ $value }}">
     <div class="invalid-feedback">
