@@ -13,7 +13,7 @@
 ])
 
 @php
-    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $error])->merge([
+    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $errors->has($id)])->merge([
         'type' => $type,
         'name' => $id,
         'id' => $id,
@@ -27,8 +27,14 @@
     <x-label :for="$id" :label="$label" class="col-sm-{{ $sm }}" />
     <div class="col-sm">
         <input {{ $attributes }}>
-    </div>
-    <div class="invalid-feedback">
-        {{ $error ?? 'ini wajib diisi!' }}
+        <div class="invalid-feedback">
+            @if ($errors->has($id))
+                @error($id)
+                    {{ $message }}
+                @enderror
+            @else
+                {{ strtolower($label) . ' wajib diisi!' }}
+            @endif
+        </div>
     </div>
 </div>

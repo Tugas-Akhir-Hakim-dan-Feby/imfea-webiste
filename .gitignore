@@ -3,6 +3,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/assets/images/qrcode
+/public/assets/images/thumbnail
+/public/assets/images/image-content
 /storage/*.key
 /vendor
 .env

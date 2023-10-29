@@ -14,13 +14,12 @@
 ])
 
 @php
-    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $error])->merge([
+    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $errors->has($id)])->merge([
         'name' => $id,
         'id' => $id,
         'autofocus' => $autofocus,
         'required' => $required,
         'placeholder' => $placeholder,
-        'value' => $value,
         'rows' => $rows,
         'cols' => $cols,
     ]);
@@ -28,8 +27,14 @@
 
 <div @class([$margin])>
     <x-label :for="$id" :label="$label" />
-    <textarea {{ $attributes }}></textarea>
+    <textarea {{ $attributes }}>{{ $slot ?? $value }}</textarea>
     <div class="invalid-feedback">
-        {{ $error ?? 'ini wajib diisi!' }}
+        @if ($errors->has($id))
+            @error($id)
+                {{ $message }}
+            @enderror
+        @else
+            {{ strtolower($label) . ' wajib diisi!' }}
+        @endif
     </div>
 </div>

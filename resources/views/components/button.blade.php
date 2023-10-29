@@ -3,6 +3,7 @@
     'size' => null,
     'label' => null,
     'route' => null,
+    'parameter' => null,
     'url' => null,
     'href' => null,
     'type' => 'button',
@@ -13,7 +14,7 @@
 
 @php
     if ($route) {
-        $href = route($route);
+        $href = route($route, $parameter);
     } elseif ($url) {
         $href = url($url);
     }

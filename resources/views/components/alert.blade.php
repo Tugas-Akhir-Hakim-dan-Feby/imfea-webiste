@@ -5,13 +5,16 @@
 ])
 
 @php
-    $attributes = $attributes->class(["alert alert-$color fade show mb-0", 'alert-dismissible' => $dismissible]);
+    $attributes = $attributes->class(["alert alert-$color fade show mb-0", 'alert-dismissible' => $dismissible])->merge([
+        'role' => 'alert',
+    ]);
 @endphp
 
 <div {{ $attributes }}>
-    {{ $label ?? $slot }}
-
     @if ($dismissible)
         <x-close dismiss="alert"></x-close>
     @endif
+
+    {{ $label ?? $slot }}
+
 </div>

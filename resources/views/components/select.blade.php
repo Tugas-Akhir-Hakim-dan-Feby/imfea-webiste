@@ -10,7 +10,7 @@
 ])
 
 @php
-    $attributes = $attributes->class(['form-select', "form-select-$size" => $size, 'is-invalid' => $error])->merge([
+    $attributes = $attributes->class(['form-select', "form-select-$size" => $size, 'is-invalid' => $errors->has($id)])->merge([
         'name' => $id,
         'id' => $id,
         'required' => $required,
@@ -28,6 +28,12 @@
 
     </select>
     <div class="invalid-feedback">
-        {{ $error ?? 'ini wajib diisi!' }}
+        @if ($errors->has($id))
+            @error($id)
+                {{ $message }}
+            @enderror
+        @else
+            {{ strtolower($label) . ' wajib diisi!' }}
+        @endif
     </div>
 </div>

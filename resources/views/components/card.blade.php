@@ -1,20 +1,27 @@
-@props(['header' => null, 'footer' => null, 'image' => null])
-<div class="card">
+@props(['header' => null, 'footer' => null, 'body' => null, 'image' => null])
+
+<div {{ $attributes->class(['card']) }}>
     @if ($image)
         <img src="{{ $image }}" class="card-img-top">
     @endif
     @if ($header)
-        <div class="card-header">
+        <div {{ $header->attributes->class(['card-header']) }}>
             {{ $header }}
         </div>
     @endif
 
-    <div class="card-body">
-        {{ $slot }}
-    </div>
+    @if ($body)
+        <div {{ $body->attributes->class(['card-body']) }}>
+            {{ $body }}
+        </div>
+    @else
+        <div class="card-body">
+            {{ $slot }}
+        </div>
+    @endif
 
     @if ($footer)
-        <div class="card-footer">
+        <div {{ $footer->attributes->class(['card-footer']) }}>
             {{ $footer }}
         </div>
     @endif
