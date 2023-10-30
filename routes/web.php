@@ -4,7 +4,9 @@ use App\Http\Controllers\WEB\Auth\LoginController;
 use App\Http\Controllers\WEB\Auth\LogoutController;
 use App\Http\Controllers\WEB\Auth\RegisterController;
 use App\Http\Controllers\WEB\HomeController;
+use App\Http\Controllers\WEB\InvoiceController;
 use App\Http\Controllers\WEB\NewsController;
+use App\Http\Controllers\WEB\MemberController;
 use App\Http\Controllers\WEB\WebinarController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,8 +51,22 @@ Route::middleware(['auth'])
     ->group(function () {
         Route::get('/', HomeController::class)
             ->name('home.index');
-        Route::get('/auth/logout', LogoutController::class)
+        Route::get('auth/logout', LogoutController::class)
             ->name('auth.logout');
+
+        Route::prefix('invoice')->name('invoice.')->group(function () {
+            Route::get('/', [InvoiceController::class, 'index'])
+                ->name('index');
+            Route::get('/{externalId}', [InvoiceController::class, 'show'])
+                ->name('show');
+        });
+
+        Route::prefix('member')->name('member.')->group(function () {
+            Route::get('register', [MemberController::class, 'index'])
+                ->name('register.index');
+            Route::post('register', [MemberController::class, 'process'])
+                ->name('register.process');
+        });
 
         Route::get('webinar/load-more', [WebinarController::class, 'loadMore'])
             ->name('webinar.load.more');

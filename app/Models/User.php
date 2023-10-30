@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Traits\CheckRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, CheckRoles;
 
     const ADMIN_APP = 1;
     const OPERATOR = 2;
@@ -50,4 +52,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function membership(): HasOne
+    {
+        return $this->hasOne(Membership::class, 'user_id', 'id');
+    }
+
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Invoice::class, 'user_id', 'id');
+    }
 }

@@ -1,7 +1,7 @@
 <div class="navbar-custom topnav-navbar">
     <div class="container-fluid">
 
-        <a href="" class="topnav-logo">
+        <a href="{{ route('web.home.index') }}" class="topnav-logo">
             <span class="topnav-logo-lg">
                 <img src="{{ asset('assets/images/logo-header.png') }}" alt="" height="40">
             </span>
@@ -10,9 +10,24 @@
             </span>
         </a>
 
+        <a class="button-menu-mobile disable-btn">
+            <div class="lines">
+                <span style="background-color: black"></span>
+                <span style="background-color: black"></span>
+                <span style="background-color: black"></span>
+            </div>
+        </a>
+
         <ul class="list-unstyled topbar-menu float-end mb-0">
-            <li class="notification-list pt-1">
-                <x-button label="Daftar Member" size="sm" url="/" class="mt-2" />
+            @if (!auth()->user()->membership)
+                <li class="notification-list pt-1">
+                    <x-button label="Daftar Member" size="sm" route="web.member.register.index" class="mt-2" />
+                </li>
+            @endif
+            <li class="notification-list">
+                <x-link class="nav-link end-bar-toggle" route="web.invoice.index">
+                    <x-icon name="dripicons-cart" class="noti-icon" />
+                </x-link>
             </li>
             <li class="notification-list dropdown">
                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown"

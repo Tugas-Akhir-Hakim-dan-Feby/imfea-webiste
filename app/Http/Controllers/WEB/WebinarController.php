@@ -15,8 +15,7 @@ use Illuminate\Support\Str;
 
 class WebinarController extends Controller
 {
-    const PER_PAGE = 7;
-
+    protected $perPage = 7;
     protected $webinar;
 
     public function __construct(Webinar $webinar)
@@ -26,25 +25,33 @@ class WebinarController extends Controller
 
     public function index()
     {
+        if (auth()->user()->isMember()) {
+            $this->perPage = 8;
+        }
+
         $webinars = $this->webinar->where(function ($query) {
             if (
-                auth()->user()->roles[0]->id == User::OPERATOR
+                auth()->user()->isOperator()
             ) {
                 $query->where('user_id', auth()->user()->id);
             }
-        })->paginate(self::PER_PAGE);
+        })->paginate($this->perPage);
 
         $data = [
             "title" => "Webinar",
             "webinars" => $webinars
         ];
 
-        return view('webinar.index', $data);
+        if (auth()->user()->isMember()) {
+            return view('webinar.member', $data);
+        }
+
+        return view('webinar.admin', $data);
     }
 
     public function loadMore(Request $request)
     {
-        $webinars = $this->webinar->where('user_id', auth()->user()->id)->paginate(self::PER_PAGE, ['*'], 'page', $request->page);
+        $webinars = $this->webinar->where('user_id', auth()->user()->id)->paginate($this->perPage, ['*'], 'page', $request->page);
 
         return view('webinar.load-more', compact('webinars'))->render();
     }
@@ -141,14 +148,5 @@ class WebinarController extends Controller
     public function background(Webinar $webinar)
     {
         return GenerateBackground::buildWebinar($webinar->title);
-    }
-
-    public function generateMembershipCard()
-    {
-        return GenerateBackground::build2();
-        // $pdf = Pdf::loadView('templates.electronic_card.membership');
-        // return $pdf->stream();
-
-        // return view('templates.electronic_card.membership');
     }
 }

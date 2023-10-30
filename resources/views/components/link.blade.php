@@ -3,12 +3,13 @@
     'color' => null,
     'route' => null,
     'url' => null,
+    'parameter' => null,
     'href' => '#',
 ])
 
 @php
     if ($route) {
-        $href = route($route);
+        $href = route($route, $parameter);
     } elseif ($url) {
         $href = url($url);
     }
