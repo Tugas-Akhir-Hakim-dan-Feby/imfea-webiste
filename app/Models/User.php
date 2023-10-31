@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Http\Traits\CheckRoles;
+use App\Notifications\SendEmailVerification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,6 +53,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // public function sendPasswordResetNotification($token)
+    // {
+    //     $url = url("/auth/new-password?token=$token&email=$this->email");
+
+    //     $this->notify(new SendResetPassword($url));
+    // }
+
+    public function sendActivationUserNotification($token)
+    {
+        $url = url("/auth/new-password?token=$token&email=$this->email");
+
+        $this->notify(new SendEmailVerification($url));
+    }
 
     public function membership(): HasOne
     {

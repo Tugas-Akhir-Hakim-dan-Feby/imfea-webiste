@@ -48,6 +48,10 @@ class LoginController extends Controller
             return MessageFixer::warningMessage("Maaf password anda salah!", route('web.auth.login.index'));
         }
 
+        if (!$user->email_verified_at) {
+            return MessageFixer::warningMessage("Maaf akun anda belum diverifikasi!", route('web.auth.login.index'));
+        }
+
         // if (!File::exists('assets/images/qrcode')) {
         //     File::makeDirectory('assets/images/qrcode');
         // }

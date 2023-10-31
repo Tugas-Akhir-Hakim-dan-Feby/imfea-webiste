@@ -3,6 +3,7 @@
 use App\Http\Controllers\WEB\Auth\LoginController;
 use App\Http\Controllers\WEB\Auth\LogoutController;
 use App\Http\Controllers\WEB\Auth\RegisterController;
+use App\Http\Controllers\WEB\Auth\VerificationController;
 use App\Http\Controllers\WEB\HomeController;
 use App\Http\Controllers\WEB\InvoiceController;
 use App\Http\Controllers\WEB\NewsController;
@@ -44,6 +45,8 @@ Route::middleware(['guest'])
             Route::post('/', [RegisterController::class, 'process'])
                 ->name('process');
         });
+
+        Route::get('verification', VerificationController::class)->name('verification');
     });
 
 Route::middleware(['auth'])

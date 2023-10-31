@@ -29,6 +29,11 @@
                                     {{ session('successMessage') }}
                                 </x-alert>
                             @endif
+                            @if (session('warningMessage'))
+                                <x-alert class="mb-3" color="warning">
+                                    {{ session('warningMessage') }}
+                                </x-alert>
+                            @endif
                             @if (session('dangerMessage'))
                                 <x-alert class="mb-3" color="danger" dismissible>
                                     {{ session('dangerMessage') }}
