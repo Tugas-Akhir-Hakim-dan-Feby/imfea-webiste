@@ -7,6 +7,8 @@
     'margin' => 'mb-3',
     'autofocus' => false,
     'required' => false,
+    'disabled' => null,
+    'readonly' => null,
     'placeholder' => '',
     'error' => null,
 ])
@@ -20,6 +22,8 @@
         'placeholder' => $placeholder,
         'value' => $value,
         'autofocus' => $autofocus,
+        'disabled' => $disabled,
+        'readonly' => $readonly,
     ]);
 @endphp
 

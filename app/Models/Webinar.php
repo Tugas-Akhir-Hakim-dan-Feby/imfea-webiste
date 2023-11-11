@@ -38,4 +38,15 @@ class Webinar extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function participant(): HasOne
+    {
+        return $this->hasOne(WebinarParticipant::class, 'webinar_id', 'id');
+    }
+
+    public function webinarParticipant(): HasOne
+    {
+        return $this->hasOne(WebinarParticipant::class, 'webinar_id', 'id')
+            ->where('user_id', auth()->user()->id);
+    }
 }

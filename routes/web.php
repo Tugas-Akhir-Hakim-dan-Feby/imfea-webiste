@@ -94,6 +94,8 @@ Route::middleware(['auth', 'check.membership'])
             ->name('webinar.meet');
         Route::get('webinar/background/{webinar}', [WebinarController::class, 'background'])
             ->name('webinar.background');
+        Route::post('webinar/register/{webinar}', [WebinarController::class, 'register'])
+            ->name('webinar.register');
         Route::resource('webinar', WebinarController::class);
 
         Route::post('news/upload-image', [NewsController::class, 'uploadImageContent'])

@@ -85,6 +85,23 @@ class WebinarController extends Controller
         }
     }
 
+    public function register(Webinar $webinar)
+    {
+        DB::beginTransaction();
+
+        try {
+            $webinar->participant()->create([
+                "user_id" => auth()->user()->id
+            ]);
+
+            DB::commit();
+            return MessageFixer::successMessage("Selamat anda berhasil terdaftar di `$webinar->title`.", route('web.webinar.index'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.webinar.index'));
+        }
+    }
+
     public function show(string $id)
     {
         //

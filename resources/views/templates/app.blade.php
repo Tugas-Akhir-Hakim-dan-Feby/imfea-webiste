@@ -36,7 +36,10 @@
         </div>
     </div>
 
-
-    </div>
+    @stack('modal')
 
     @include('templates.foot')
+
+</body>
+
+</html>

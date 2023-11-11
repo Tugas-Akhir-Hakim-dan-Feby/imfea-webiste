@@ -13,6 +13,12 @@
         </x-alert>
     @endif
 
+    @if (session('dangerMessage'))
+        <x-alert class="mb-3" color="danger">
+            {{ session('dangerMessage') }}
+        </x-alert>
+    @endif
+
     <x-row id="loadMore">
         <x-col lg="3" md="4" sm="6" xl="3" class="mb-4">
             <x-link route="web.webinar.create">
