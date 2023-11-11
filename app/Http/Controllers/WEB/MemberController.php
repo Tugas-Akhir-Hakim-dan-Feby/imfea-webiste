@@ -28,7 +28,7 @@ class MemberController extends Controller
     public function index()
     {
         $data = [
-            "title" => "Daftar Member",
+            "title" => "Data Profil Member",
             "provinces" => Province::get(),
             "work_types" => $this->workType->all()
         ];
@@ -71,7 +71,7 @@ class MemberController extends Controller
                 ]);
             }
 
-            $description = "Membership IMFEA (" . date('d-m-Y') . " - " . Carbon::now()->addYear()->isoFormat('dd-mm-Y') . ")";
+            $description = "Membership IMFEA (" . date('d-m-Y') . " - " . Carbon::now()->addYears(3)->isoFormat('DD-MM-YYYY') . ")";
             $payment = $this->payment->createInvoiceMember(auth()->user()->id, $description, 1000000);
 
             $this->membership->create($request->all());

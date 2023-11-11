@@ -19,11 +19,6 @@
         </a>
 
         <ul class="list-unstyled topbar-menu float-end mb-0">
-            @if (!auth()->user()->membership)
-                <li class="notification-list pt-1">
-                    <x-button label="Daftar Member" size="sm" route="web.member.register.index" class="mt-2" />
-                </li>
-            @endif
             <li class="notification-list">
                 <x-link class="nav-link end-bar-toggle" route="web.invoice.index">
                     <x-icon name="dripicons-cart" class="noti-icon" />

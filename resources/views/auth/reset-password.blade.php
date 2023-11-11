@@ -18,9 +18,10 @@
                         <div class="card-body p-4">
 
                             <div class="text-center w-75 m-auto">
-                                <h4 class="text-dark-50 text-center pb-0 fw-bold">Login</h4>
+                                <h4 class="text-dark-50 text-center pb-0 fw-bold">Reset Password</h4>
                                 <p class="text-muted mb-4">
-                                    Bagi kamu yang sudah terdaftar, silakan login
+                                    Masukkan alamat email Anda dan kami akan mengirimkan email berisi instruksi untuk
+                                    mengatur ulang kata sandi Anda.
                                 </p>
                             </div>
 
@@ -40,32 +41,22 @@
                                 </x-alert>
                             @endif
 
-                            <form action="{{ route('web.auth.login.process') }}" method="POST" class="needs-validation"
-                                novalidate>
+                            <form action="{{ route('web.auth.reset-password.process') }}" method="POST"
+                                class="needs-validation" novalidate>
                                 @csrf
-                                <x-input label="Email" id="email" type="email" required autofocus />
-                                <x-input-addon label="Password" type="password" id="password" required>
-                                    <div class="input-group-text" data-password="false">
-                                        <span class="password-eye"></span>
-                                    </div>
-                                </x-input-addon>
+                                <x-input label="Email" id="email" type="email" required autofocus
+                                    value="{{ old('email') }}" />
 
                                 <div class="mb-3 mb-0 text-center">
-                                    <x-button label="Login" size="sm" type="submit" class="w-100" />
+                                    <x-button label="Reset Password" size="sm" type="submit" class="w-100" />
                                 </div>
 
                             </form>
                             <x-row class="mt-3">
                                 <x-col class="text-center">
                                     <p class="text-muted">
-                                        <x-link route="web.auth.reset-password.index" class="text-muted ms-1 ">Lupa
-                                            Password?</x-link>
-                                    </p>
-                                </x-col>
-                                <x-col class="text-center">
-                                    <p class="text-muted">
-                                        Belum punya akun? <x-link route="web.auth.register.index"
-                                            class="text-muted ms-1 fw-bold">Daftar</x-link>
+                                        Kembali ke <x-link route="web.auth.login.index"
+                                            class="text-muted ms-1 fw-bold">Login</x-link>
                                     </p>
                                 </x-col>
                             </x-row>

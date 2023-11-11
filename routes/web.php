@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\WEB\Auth\LoginController;
 use App\Http\Controllers\WEB\Auth\LogoutController;
+use App\Http\Controllers\WEB\Auth\NewPasswordController;
 use App\Http\Controllers\WEB\Auth\RegisterController;
+use App\Http\Controllers\WEB\Auth\ResetPasswordController;
 use App\Http\Controllers\WEB\Auth\VerificationController;
 use App\Http\Controllers\WEB\HomeController;
 use App\Http\Controllers\WEB\InvoiceController;
@@ -46,16 +48,28 @@ Route::middleware(['guest'])
                 ->name('process');
         });
 
+        Route::prefix('reset-password')->name('reset-password.')->group(function () {
+            Route::get('/', [ResetPasswordController::class, 'index'])->name('index');
+            Route::post('/', [ResetPasswordController::class, 'process'])->name('process');
+        });
+
+        Route::prefix('new-password')->name('new-password.')->group(function () {
+            Route::get('/', [NewPasswordController::class, 'index'])->name('index');
+            Route::post('/', [NewPasswordController::class, 'process'])->name('process');
+        });
+
         Route::get('verification', VerificationController::class)->name('verification');
     });
 
 Route::middleware(['auth'])
     ->name('web.')
     ->group(function () {
-        Route::get('/', HomeController::class)
-            ->name('home.index');
-        Route::get('auth/logout', LogoutController::class)
-            ->name('auth.logout');
+        Route::prefix('member')->name('member.')->group(function () {
+            Route::get('register', [MemberController::class, 'index'])
+                ->name('register.index');
+            Route::post('register', [MemberController::class, 'process'])
+                ->name('register.process');
+        });
 
         Route::prefix('invoice')->name('invoice.')->group(function () {
             Route::get('/', [InvoiceController::class, 'index'])
@@ -64,12 +78,15 @@ Route::middleware(['auth'])
                 ->name('show');
         });
 
-        Route::prefix('member')->name('member.')->group(function () {
-            Route::get('register', [MemberController::class, 'index'])
-                ->name('register.index');
-            Route::post('register', [MemberController::class, 'process'])
-                ->name('register.process');
-        });
+        Route::get('auth/logout', LogoutController::class)
+            ->name('auth.logout');
+    });
+
+Route::middleware(['auth', 'check.membership'])
+    ->name('web.')
+    ->group(function () {
+        Route::get('/', HomeController::class)
+            ->name('home.index');
 
         Route::get('webinar/load-more', [WebinarController::class, 'loadMore'])
             ->name('webinar.load.more');
