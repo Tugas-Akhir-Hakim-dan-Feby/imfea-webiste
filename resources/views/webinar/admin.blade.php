@@ -52,7 +52,7 @@
                             </span>
                             |
                             <x-icon name="dripicons-user-group" />&nbsp;
-                            <x-badge color="info">0 Peserta</x-badge>
+                            <x-badge color="info">{{ $webinar->participants->count() }} Peserta</x-badge>
                             <span> |
                                 <x-icon name="dripicons-checkmark" />
                                 Materi & Sertifikat

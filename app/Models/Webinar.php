@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Webinar extends Model
@@ -42,6 +43,11 @@ class Webinar extends Model
     public function participant(): HasOne
     {
         return $this->hasOne(WebinarParticipant::class, 'webinar_id', 'id');
+    }
+
+    public function participants(): HasMany
+    {
+        return $this->hasMany(WebinarParticipant::class, 'webinar_id', 'id');
     }
 
     public function webinarParticipant(): HasOne
