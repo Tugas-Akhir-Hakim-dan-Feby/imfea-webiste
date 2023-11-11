@@ -3,10 +3,10 @@
 
         <a href="{{ route('web.home.index') }}" class="topnav-logo">
             <span class="topnav-logo-lg">
-                <img src="{{ asset('assets/images/logo-header.png') }}" alt="" height="40">
+                <img src="{{ asset('assets/logo/logo-text.png') }}" alt="" height="35">
             </span>
             <span class="topnav-logo-sm">
-                <img src="{{ asset('assets/images/logo-header.png') }}" alt="" height="40">
+                <img src="{{ asset('assets/logo/logo-text.png') }}" alt="" height="35">
             </span>
         </a>
 
