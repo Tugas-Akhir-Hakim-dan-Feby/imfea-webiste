@@ -8,7 +8,7 @@
                 <div class="col-xxl-4 col-lg-5">
                     <div class="card">
 
-                        <div class="card-header pt-3 pb-3 text-center bg-primary">
+                        <div class="card-header pt-3 pb-3 text-center bg-light">
                             <a href="{{ route('web.home.index') }}">
                                 <span>
                                     <img src="{{ asset('assets/logo/logo-full.png') }}" alt="" width="200">

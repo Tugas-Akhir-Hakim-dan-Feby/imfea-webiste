@@ -88,6 +88,8 @@ Route::middleware(['auth', 'check.membership'])
         Route::get('/', HomeController::class)
             ->name('home.index');
 
+        Route::get('webinar/all', [WebinarController::class, 'all'])
+            ->name('webinar.all');
         Route::get('webinar/load-more', [WebinarController::class, 'loadMore'])
             ->name('webinar.load.more');
         Route::get('webinar/meet/{slug}', [WebinarController::class, 'meet'])

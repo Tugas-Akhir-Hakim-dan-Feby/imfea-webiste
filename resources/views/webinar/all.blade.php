@@ -5,7 +5,10 @@
 @extends('templates.app')
 
 @section('content')
-    <x-header-page :title="$title" :options="[['link' => route('web.home.index'), 'text' => 'Dashboard']]" />
+    <x-header-page :title="$title" :options="[
+        ['link' => route('web.home.index'), 'text' => 'Dashboard'],
+        ['link' => route('web.webinar.index'), 'text' => 'Webinar'],
+    ]" />
 
     @if (session('successMessage'))
         <x-alert class="mb-3" color="success">
@@ -19,19 +22,7 @@
         </x-alert>
     @endif
 
-    <x-row>
-        <x-col lg="3" md="4" sm="6" xl="3" class="mb-4">
-            <x-link route="web.webinar.all">
-                <x-card class="bg-primary h-100 shadow-lg">
-                    <x-slot:body
-                        class="h-100 d-flex justify-content-center flex-column align-items-center text-white text-center">
-                        <i class="uil-folder-medical" style="font-size: 5em"></i>
-                        <p class="mt-3 fw-bold">Tambah Webinar</p>
-                    </x-slot:body>
-                </x-card>
-            </x-link>
-        </x-col>
-
+    <x-row id="loadMore">
         @foreach ($webinars as $webinar)
             @php
                 $activityDate = Carbon::parse($webinar->activity_date);
@@ -66,15 +57,13 @@
                     <x-slot:footer class="d-flex justify-content-between align-items-center">
                         @if ($daysDifference < 2)
                             @if ($webinar->webinarParticipant)
-                                <x-button label="Detail" class="text-white w-100" color="info" size="sm"
-                                    route="web.webinar.show" :parameter="$webinar" />
+                                <x-button label="Detail" class="text-white w-100" color="info" size="sm" />
                             @else
                                 <span class="btn btn-sm btn-light w-100" style="cursor: default">Pendaftaran Ditutup</span>
                             @endif
                         @else
                             @if ($webinar->webinarParticipant)
-                                <x-button label="Detail" class="text-white w-100" color="info" size="sm"
-                                    route="web.webinar.show" :parameter="$webinar" />
+                                <x-button label="Detail" class="text-white w-100" color="info" size="sm" />
                             @else
                                 <x-button label="Daftar" class="text-white w-100 btn-register" color="primary"
                                     size="sm" toggle="modal" target="#registerWebinar"
@@ -86,4 +75,70 @@
             </x-col>
         @endforeach
     </x-row>
+
+    <div class="text-center mb-4">
+        <x-button size="sm" color="light" id="loadMoreBtn">
+            Load More <x-icon name="dripicons-clockwise" />
+        </x-button>
+    </div>
 @endsection
+
+@push('modal')
+    <x-modal id="registerWebinar" title="Daftar Webinar <span id='title'></span>"
+        form="{{ route('web.webinar.register', 1) }}">
+        <x-input label="Nama Pendaftar" id="name" disabled value="{{ auth()->user()->name }}" />
+        <x-input label="Email Pendaftar" id="email" disabled value="{{ auth()->user()->email }}" />
+
+        <x-slot:footer class="d-flex justify-content-between">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <x-button type="submit" color="primary" size="sm" label="Daftar" />
+        </x-slot:footer>
+    </x-modal>
+@endpush
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            let page = {{ $webinars->currentPage() }};
+            const lastPage = {{ $webinars->lastPage() }};
+
+            if (page == lastPage) {
+                $('#loadMoreBtn').hide();
+            }
+
+            $('#loadMoreBtn').on('click', function() {
+                if (page < lastPage) {
+                    page++;
+
+                    $.ajax({
+                        url: '{{ route('web.webinar.load.more') }}',
+                        data: {
+                            page: page
+                        },
+                        method: 'GET',
+                        success: function(data) {
+                            $('#loadMore').append(data);
+
+                            if (page === lastPage) {
+                                $('#loadMoreBtn').hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#loadMoreBtn').hide();
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("body").on("click", ".btn-register", function() {
+                let target = $(this).data('bs-target');
+                let webinar = $(this).data('webinar')
+
+                $(`${target} form`).attr('action', `{{ url('webinar/register/') }}/${webinar.id}`)
+                $(`${target} #title`).html(`(${webinar.title})`)
+            })
+        })
+    </script>
+@endpush
