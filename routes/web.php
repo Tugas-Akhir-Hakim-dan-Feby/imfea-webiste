@@ -88,6 +88,7 @@ Route::middleware(['auth', 'check.membership'])
         Route::get('/', HomeController::class)
             ->name('home.index');
 
+        // Route Webinar
         Route::get('webinar/all', [WebinarController::class, 'all'])
             ->name('webinar.all');
         Route::get('webinar/load-more', [WebinarController::class, 'loadMore'])
@@ -100,6 +101,9 @@ Route::middleware(['auth', 'check.membership'])
             ->name('webinar.register');
         Route::resource('webinar', WebinarController::class);
 
+        // Route News
+        Route::get('news/{date}/{month}/{year}/{slug}.html', [NewsController::class, 'showSlug'])
+            ->name('news.show.slug');
         Route::post('news/upload-image', [NewsController::class, 'uploadImageContent'])
             ->name('news.upload.image');
         Route::put('news/update-status/{news}', [NewsController::class, 'updateStatus'])

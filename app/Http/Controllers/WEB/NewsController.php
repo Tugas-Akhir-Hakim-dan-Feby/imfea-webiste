@@ -39,7 +39,11 @@ class NewsController extends Controller
             "news" => $news
         ];
 
-        return view('news.index', $data);
+        if (auth()->user()->isMember()) {
+            return view('news.member', $data);
+        }
+
+        return view('news.admin', $data);
     }
 
     public function create()
@@ -84,6 +88,21 @@ class NewsController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function showSlug($date, $month, $year, $slug)
+    {
+        $news = $this->news->whereSlug($slug)->first();
+        if (!$news) {
+            abort(404);
+        }
+
+        $data = [
+            "title" => $news->title,
+            "news" => $news
+        ];
+
+        return view('news.show', $data);
     }
 
     public function edit(News $news)
