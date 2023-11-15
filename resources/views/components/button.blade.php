@@ -23,7 +23,7 @@
     $attributes = $attributes->class(["btn btn-$color", "btn-$size" => $size])->merge([
         'type' => !$href ? $type : null,
         'href' => $href,
-        'target' => '_blank',
+        'target' => !$blank ? null : '_blank',
         'data-bs-dismiss' => $dismiss,
         'data-bs-toggle' => $toggle,
         'data-bs-target' => $target,
