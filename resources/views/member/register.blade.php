@@ -1,5 +1,8 @@
 @php
     use Carbon\Carbon;
+    $maxDateBirth = now()
+        ->subYears(15)
+        ->format('Y-m-d');
 @endphp
 
 @extends('templates.app')
@@ -30,11 +33,15 @@
                         </x-select>
                     </x-col>
                     <x-col lg="6" md="6" xl="6" sm="6">
-                        <x-input label="Tempat Lahir" id="place_birth" required value="{{ old('place_birth') }}" />
-                    </x-col>
-                    <x-col lg="6" md="6" xl="6" sm="6">
-                        <x-input label="Tanggal Lahir" id="date_birth" type="date" required
-                            value="{{ old('date_birth') }}" />
+                        <x-row>
+                            <x-col lg="6" md="6" xl="6">
+                                <x-input label="Tempat Lahir" id="place_birth" required value="{{ old('place_birth') }}" />
+                            </x-col>
+                            <x-col lg="6" md="6" xl="6">
+                                <x-input label="Tanggal Lahir" id="date_birth" type="date" required
+                                    value="{{ old('date_birth') }}" max="{{ $maxDateBirth }}" />
+                            </x-col>
+                        </x-row>
                     </x-col>
                     <x-col lg="6" md="6" xl="6" sm="6">
                         <x-select label="Kewarganegaraan" id="citizenship" required>
@@ -60,6 +67,9 @@
                     </x-col>
                     <x-col lg="6" md="6" xl="6" sm="6">
                         <x-input label="Alamat" id="address" required value="{{ old('address') }}" />
+                    </x-col>
+                    <x-col lg="6" md="6" xl="6" sm="6">
+                        <x-input label="Kode Pos" id="postal_code" required value="{{ old('postal_code') }}" />
                     </x-col>
                     <x-col lg="6" md="6" xl="6" sm="6">
                         <x-input label="No. Telepon" id="phone" required value="{{ old('phone') }}" />

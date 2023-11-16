@@ -20,6 +20,7 @@ class Membership extends Model
         "date_birth",
         "citizenship",
         "address",
+        "postal_code",
         "phone",
         "pas_photo",
         "cv",

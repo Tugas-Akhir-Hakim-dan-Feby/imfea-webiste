@@ -6,6 +6,8 @@
 /public/assets/images/qrcode
 /public/assets/images/thumbnail
 /public/assets/images/image-content
+/public/assets/images/cv
+/public/assets/images/pas_photo
 /storage/*.key
 /vendor
 .env
