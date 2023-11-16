@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Membership extends Model
 {
@@ -34,5 +35,10 @@ class Membership extends Model
     public function pathCv()
     {
         return 'assets/images/cv/' . date('dmY');
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

@@ -22,7 +22,8 @@ class MeController extends Controller
 
         $data = [
             "user" => $user,
-            "roles" => $user->roles->pluck("name")
+            "roles" => $user->roles->pluck("name"),
+            "is_member" => $user->invoice ? true : false
         ];
 
         return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "selamat data pribadi anda berhasil diambil!", MessageFixer::HTTP_OK, $data);

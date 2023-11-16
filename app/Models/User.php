@@ -74,7 +74,7 @@ class User extends Authenticatable
         return $this->hasOne(Membership::class, 'user_id', 'id');
     }
 
-    public function payment(): HasOne
+    public function invoice(): HasOne
     {
         return $this->hasOne(Invoice::class, 'user_id', 'id');
     }

@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Requests\WEB\Member;
+namespace App\Http\Requests\API\Member;
 
+use App\Http\Facades\MessageFixer;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class RegisterRequest extends FormRequest
 {
@@ -55,5 +59,16 @@ class RegisterRequest extends FormRequest
             "image_pas_photo" => "pas foto / foto profil",
             "document_cv" => "cv / daftar riwayat hidup",
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $response = new JsonResponse([
+            'status' => MessageFixer::WARNING,
+            'message' => $validator->errors(),
+            'status_code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+
+        throw new ValidationException($validator, $response);
     }
 }
