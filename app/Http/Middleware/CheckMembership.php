@@ -26,10 +26,9 @@ class CheckMembership
 
         if (
             $request->user()->roles[0]->id == User::MEMBER &&
-            $request->user()->payment::PENDING == $request->user()->payment->status
-
+            $request->user()->invoice::PENDING == $request->user()->invoice->status
         ) {
-            return redirect(route('web.invoice.show', $request->user()->payment->external_id));
+            return redirect(route('web.invoice.show', $request->user()->invoice->external_id));
         }
 
         return $next($request);
