@@ -25,10 +25,10 @@
                     </div>
                 </x-slot:header>
                 <x-slot:body>
-                    <x-table :isComplete="true" class="table-bordered table-hover">
+                    <x-table :isComplete="true" class="table-bordered table-hover table-sm">
                         <x-slot:thead>
                             <th>No.</th>
-                            <th style="width: 25%">Judul Berita</th>
+                            <th>Judul Berita</th>
                             <th>Penulis Berita</th>
                             <th>Status Berita</th>
                             <th>Aksi</th>
@@ -36,14 +36,14 @@
                         <x-slot:tbody>
                             @forelse ($news as $index => $new)
                                 <tr>
-                                    <th>{{ $index + $news->firstItem() }}.</th>
-                                    <td style="width: 25%">{{ $new->title }}</td>
-                                    <td>{{ $new->author->name }}</td>
-                                    <td>
+                                    <th data-label="No.">{{ $index + $news->firstItem() }}.</th>
+                                    <td data-label="Judul Berita">{{ $new->title }}</td>
+                                    <td data-label="Penulis Berita">{{ $new->author->name }}</td>
+                                    <td data-label="Status Berita">
                                         <div class="d-flex justify-content-between align-items-center" style="width: 50%">
                                             <small class="form-check-label {{ $new->status ? '' : 'text-danger' }}">Tidak
                                                 Aktif</small>
-                                            <div class="form-check form-switch">
+                                            <div class="form-check form-switch ms-2 me-1">
                                                 <form action="{{ route('web.news.update.status', $new) }}" method="POST">
                                                     @csrf
                                                     @method('put')
@@ -56,15 +56,17 @@
                                                 class="form-check-label {{ $new->status ? 'text-success' : '' }}">Aktif</small>
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ route('web.news.edit', $new) }}"
-                                            class="btn btn-sm btn-warning text-white me-2">Edit</a>
-                                        <form action="{{ route('web.news.destroy', $new) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="btn btn-sm btn-danger text-white btn-delete">Hapus</button>
-                                        </form>
+                                    <td data-label="Aksi">
+                                        <div>
+                                            <a href="{{ route('web.news.edit', $new) }}"
+                                                class="btn btn-sm btn-warning text-white me-2">Edit</a>
+                                            <form action="{{ route('web.news.destroy', $new) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-sm btn-danger text-white btn-delete">Hapus</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty

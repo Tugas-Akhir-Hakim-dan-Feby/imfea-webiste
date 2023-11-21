@@ -19,3 +19,33 @@
 body.authentication-bg {
     background-image: url("../images/bg-auth.jpg");
 }
+
+@media screen and (max-width: 576px) {
+    .table-sm thead {
+        display: none;
+    }
+
+    .table-sm tbody tr {
+        display: block;
+    }
+
+    .table-sm tbody tr:not(:last-child) {
+        margin-bottom: 1rem;
+        border-color: #dee2e6;
+    }
+
+    .table-sm tbody th,
+    .table-sm tbody td {
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: solid #dee2e6 1px;
+    }
+
+    .table-sm tbody th::before,
+    .table-sm tbody td::before {
+        content: attr(data-label);
+        text-align: left;
+        font-weight: 600;
+    }
+}
