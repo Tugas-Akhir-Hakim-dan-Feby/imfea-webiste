@@ -8,6 +8,7 @@
 /public/assets/images/image-content
 /public/assets/images/cv
 /public/assets/images/pas_photo
+/public/assets/images/training
 /storage/*.key
 /vendor
 .env

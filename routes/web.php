@@ -12,6 +12,7 @@ use App\Http\Controllers\WEB\MembercardController;
 use App\Http\Controllers\WEB\NewsController;
 use App\Http\Controllers\WEB\MemberController;
 use App\Http\Controllers\WEB\ProfileController;
+use App\Http\Controllers\WEB\TrainingController;
 use App\Http\Controllers\WEB\WebinarController;
 use Illuminate\Support\Facades\Route;
 
@@ -106,6 +107,8 @@ Route::middleware(['auth', 'check.membership'])
         Route::put('news/update-status/{news}', [NewsController::class, 'updateStatus'])
             ->name('news.update.status');
         Route::resource('news', NewsController::class);
+
+        Route::resource('training', TrainingController::class);
 
         Route::prefix('profile')->name('profile.')->group(function () {
             Route::get('/', [ProfileController::class, 'index'])

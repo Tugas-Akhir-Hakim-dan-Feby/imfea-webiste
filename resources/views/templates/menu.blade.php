@@ -28,6 +28,13 @@
             </x-link>
         </li>
 
+        <li class="side-nav-item">
+            <x-link route="web.training.index" class="side-nav-link">
+                <x-icon name="uil-clipboard-alt" />
+                <span> Pelatihan </span>
+            </x-link>
+        </li>
+
     </ul>
 
     <div class="clearfix"></div>
