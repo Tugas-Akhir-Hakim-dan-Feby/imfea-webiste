@@ -23,7 +23,7 @@
     ]);
 @endphp
 
-<div @class([$margin, 'row'])>
+<div @class([$margin, 'row align-items-center'])>
     <x-label :for="$id" :label="$label" class="col-sm-{{ $sm }}" />
     <div class="col-sm">
         <input {{ $attributes }}>

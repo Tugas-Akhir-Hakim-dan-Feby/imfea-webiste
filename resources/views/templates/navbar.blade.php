@@ -39,13 +39,13 @@
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
                     aria-labelledby="topbar-userdrop">
                     <div class=" dropdown-header noti-title">
-                        <h6 class="text-overflow m-0">Welcome !</h6>
+                        <h6 class="text-overflow m-0">Selamat Datang !</h6>
                     </div>
 
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <i class="mdi mdi-account-circle me-1"></i>
-                        <span>My Account</span>
-                    </a>
+                    <x-link route="web.profile.index" class="dropdown-item notify-item">
+                        <x-icon name="mdi mdi-account-circle me-1" />
+                        <span>Profil Saya</span>
+                    </x-link>
 
                     <x-link class="dropdown-item notify-item" route="web.auth.logout">
                         <x-icon name="mdi mdi-logout me-1" />

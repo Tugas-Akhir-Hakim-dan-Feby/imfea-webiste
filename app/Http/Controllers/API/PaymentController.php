@@ -7,8 +7,13 @@ use App\Http\Facades\MessageFixer;
 use App\Http\Facades\PaymentFixer;
 use App\Models\Invoice;
 use App\Models\User;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class PaymentController extends Controller
 {
@@ -40,6 +45,8 @@ class PaymentController extends Controller
                     "status" => $this->invoice::SUCCESS,
                     "payment_method" => $request->bank_code,
                 ]);
+
+                $this->generateMembercard($invoice->user);
             } else {
                 $invoice->update([
                     "recreated_at" => now(),
@@ -73,6 +80,8 @@ class PaymentController extends Controller
             $invoice->update([
                 "status" => $this->invoice::SUCCESS,
             ]);
+
+            $this->generateMembercard($invoice->user);
 
             DB::commit();
             return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "selamat invoice #`$invoice->external_id` berhasil disimpan.", MessageFixer::HTTP_OK, $invoice);
@@ -113,6 +122,22 @@ class PaymentController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             return MessageFixer::customApiMessage(MessageFixer::ERROR, $th->getMessage(), MessageFixer::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    protected function generateMembercard($user)
+    {
+        if (!File::exists('assets/images/qrcode')) {
+            File::makeDirectory('assets/images/qrcode');
+        }
+
+        if (!File::exists('assets/images/qrcode/' . $user->id . '.png')) {
+            $renderer = new ImageRenderer(
+                new RendererStyle(400),
+                new ImagickImageBackEnd(),
+            );
+            $writer = new Writer($renderer);
+            $writer->writeFile(route('web.membercard', $user->slug), public_path('assets/images/qrcode/' . $user->id . '.png'));
         }
     }
 }

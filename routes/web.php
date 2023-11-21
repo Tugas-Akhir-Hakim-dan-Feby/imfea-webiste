@@ -8,8 +8,10 @@ use App\Http\Controllers\WEB\Auth\ResetPasswordController;
 use App\Http\Controllers\WEB\Auth\VerificationController;
 use App\Http\Controllers\WEB\HomeController;
 use App\Http\Controllers\WEB\InvoiceController;
+use App\Http\Controllers\WEB\MembercardController;
 use App\Http\Controllers\WEB\NewsController;
 use App\Http\Controllers\WEB\MemberController;
+use App\Http\Controllers\WEB\ProfileController;
 use App\Http\Controllers\WEB\WebinarController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,11 +26,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('home');
-
-Route::get('/membership-card', [WebinarController::class, 'generateMembershipCard']);
+Route::get('membercard/{slug}', MembercardController::class)
+    ->name('web.membercard');
 
 Route::middleware(['guest'])
     ->prefix('auth')
@@ -88,7 +87,6 @@ Route::middleware(['auth', 'check.membership'])
         Route::get('/', HomeController::class)
             ->name('home.index');
 
-        // Route Webinar
         Route::get('webinar/all', [WebinarController::class, 'all'])
             ->name('webinar.all');
         Route::get('webinar/load-more', [WebinarController::class, 'loadMore'])
@@ -101,7 +99,6 @@ Route::middleware(['auth', 'check.membership'])
             ->name('webinar.register');
         Route::resource('webinar', WebinarController::class);
 
-        // Route News
         Route::get('news/{date}/{month}/{year}/{slug}.html', [NewsController::class, 'showSlug'])
             ->name('news.show.slug');
         Route::post('news/upload-image', [NewsController::class, 'uploadImageContent'])
@@ -109,4 +106,12 @@ Route::middleware(['auth', 'check.membership'])
         Route::put('news/update-status/{news}', [NewsController::class, 'updateStatus'])
             ->name('news.update.status');
         Route::resource('news', NewsController::class);
+
+        Route::prefix('profile')->name('profile.')->group(function () {
+            Route::get('/', [ProfileController::class, 'index'])
+                ->name('index');
+
+            Route::get('membercard', [ProfileController::class, 'membercard'])
+                ->name('membercard');
+        });
     });

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Facades\Region\City;
+use App\Http\Facades\Region\Province;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -35,6 +37,16 @@ class Membership extends Model
     public function pathCv()
     {
         return 'assets/images/cv/' . date('dmY');
+    }
+
+    public function getProvinceAttribute()
+    {
+        return Province::show($this->attributes['province_id']);
+    }
+
+    public function getCityAttribute()
+    {
+        return City::show($this->attributes['city_id']);
     }
 
     public function user(): HasOne

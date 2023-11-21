@@ -6,6 +6,8 @@ use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class GenerateBackground
 {
@@ -46,29 +48,31 @@ class GenerateBackground
         imagepng($template);
     }
 
-    public static function buildMembercard()
+    public static function buildMembercard($user)
     {
+        $memberCreatedAt = Carbon::createFromFormat("Y-m-d H:i:s", $user->membership->created_at);
+
         $template = imagecreatefrompng(public_path('assets/images/frame_membercard.png'));
         $blackColor = imagecolorallocate($template, 0, 0, 0);
         $redColor = imagecolorallocate($template, 220, 52, 50);
         $font = public_path('assets/fonts/Nunito-Bold.ttf');
-        $logo = imagecreatefrompng(public_path('assets/images/logo.png'));
-        $qrcode = imagecreatefrompng(public_path('assets/images/qrcode/1.png'));
+        $imageProfile = imagecreatefromjpeg(public_path('assets/images/pas_photo/' . date('dmY', strtotime($user->membership->created_at)) . '/' . $user->membership->pas_photo));
+        $qrcode = imagecreatefrompng(public_path('assets/images/qrcode/' . $user->id . '.png'));
 
-        imagecopy($template, $logo, 130, 235, 0, 0, 300, 400);
+        imagecopy($template, $imageProfile, 130, 235, 0, 0, 300, 400);
         imagecopy($template, $qrcode, 1459, 650, 0, 0, 400, 400);
 
-        imagettftext($template, 50, 0, 490, 420, $blackColor, $font, "HAKIM ASRORI");
-        imagettftext($template, 50, 0, 490, 520, $redColor, $font, "HAKIM ASRORI");
-        imagettftext($template, 50, 0, 490, 620, $blackColor, $font, date('Y'));
-        imagettftext($template, 50, 0, 680, 620, $blackColor, $font, date('m'));
-        imagettftext($template, 50, 0, 800, 620, $blackColor, $font, date('d'));
-        imagettftext($template, 50, 0, 910, 620, $blackColor, $font, "001");
+        imagettftext($template, 50, 0, 490, 420, $blackColor, $font, $user->name);
+        imagettftext($template, 50, 0, 490, 520, $redColor, $font, "Member Aplikasi");
+        imagettftext($template, 50, 0, 490, 620, $blackColor, $font, $memberCreatedAt->isoFormat('YYYY'));
+        imagettftext($template, 50, 0, 680, 620, $blackColor, $font, $memberCreatedAt->isoFormat('MM'));
+        imagettftext($template, 50, 0, 800, 620, $blackColor, $font, $memberCreatedAt->isoFormat('DD'));
+        imagettftext($template, 50, 0, 910, 620, $blackColor, $font, "00" . $user::MEMBER_APP);
         imagettftext($template, 50, 0, 1055, 620, $blackColor, $font, "0001");
         imagettftext($template, 40, 0, 960, 940, $blackColor, $font, "Anggota Sejak :");
-        imagettftext($template, 40, 0, 950, 1020, $blackColor, $font, "OKTOBER 2023");
+        imagettftext($template, 40, 0, 950, 1020, $blackColor, $font, Str::upper($memberCreatedAt->isoFormat('MMMM YYYY')));
 
-        $text = "Puntang, kecamatan Losarang, Indramayu, Jawa Barat, Indonesia.";
+        $text = ucwords($user->membership->address);
         $textArray = explode(" ", $text);
         $lines = [];
         $currentLine = "";

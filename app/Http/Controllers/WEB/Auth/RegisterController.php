@@ -9,6 +9,7 @@ use App\Http\Requests\WEB\Auth\RegisterRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,7 +36,8 @@ class RegisterController extends Controller
         DB::beginTransaction();
 
         $request->merge([
-            "password" => Hash::make($request->password)
+            "password" => Hash::make($request->password),
+            "slug" => Str::slug($request->name . ' ' . mt_rand(000000, 999999))
         ]);
 
         try {
