@@ -57,7 +57,12 @@
 
         ClassicEditor
             .create(document.querySelector('#content'), {
-                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                toolbar: [
+                    'heading', '|', 'bold', 'italic', '|', 'link', 'insertTable',
+                    '|',
+                    'bulletedList',
+                    'numberedList', 'blockQuote'
+                ],
                 heading: {
                     options: [{
                             model: 'paragraph',
