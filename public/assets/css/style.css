@@ -20,6 +20,11 @@ body.authentication-bg {
     background-image: url("../images/bg-auth.jpg");
 }
 
+.disable-link {
+    pointer-events: none;
+    cursor: no-drop;
+}
+
 @media screen and (max-width: 576px) {
     .table-sm thead {
         display: none;

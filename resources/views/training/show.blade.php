@@ -69,51 +69,14 @@
                     {!! $training->content !!}
                 </x-slot:body>
             </x-card>
-            <x-card>
-                <x-slot:header class="d-flex justify-content-between align-items-center">
-                    <h3 class="fw-normal">Daftar Materi</h3>
-                    <div>
-                        <x-button label="Tambah Materi" class="text-white w-100" color="primary" size="sm"
-                            route="web.training.create" />
-                    </div>
-                </x-slot:header>
-
-                <x-slot:body>
-                </x-slot:body>
-            </x-card>
+            @include('training.topic.index')
+            @include('training.course.index')
         </x-col>
 
         <x-col lg="4" xl="4" md="4">
-            <x-card :image="$training->thumbnail">
-                {{-- <x-button label="Mulai Belajar" class="text-white w-100" color="primary" route="web.training.edit"
-                    :parameter="$training" /> --}}
-            </x-card>
-            <ul class="list-group mb-3 shadow">
-                <li class="list-group-item">
-                    <h3 class="fw-normal text-secondary">Manfaat</h3>
-                </li>
-                <li class="list-group-item d-flex align-items-center">
-                    <img src="{{ asset('assets/images/certificate.jpg') }}" height="50" width="50">
-                    <h5 class="ms-2 my-0">Sertifikat</h5>
-                </li>
-                <li class="list-group-item d-flex align-items-center">
-                    <img src="{{ asset('assets/images/materi.jpg') }}" height="50" width="50">
-                    <h5 class="ms-2 my-0">Akses Materi</h5>
-                </li>
-            </ul>
-            <x-card>
-                <x-slot:header>
-                    <h3 class="fw-normal">Mentor</h3>
-                </x-slot:header>
-                <x-slot:body>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid objectfit-cover rounded-2"
-                            src="https://ui-avatars.com/api/?background=random&size=50&length=2&name={{ $training->user->name }}"
-                            alt="{{ $training->user->name }}">
-                        <h5 class="fw-bolder ms-2">{{ $training->user->name }}</h5>
-                    </div>
-                </x-slot:body>
-            </x-card>
+            @include('training.detail.thumbnail')
+            @include('training.detail.benefit')
+            @include('training.detail.mentor')
         </x-col>
     </x-row>
 @endsection

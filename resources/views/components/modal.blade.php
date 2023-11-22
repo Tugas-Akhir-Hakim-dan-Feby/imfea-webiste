@@ -1,4 +1,4 @@
-@props(['id' => null, 'title' => null, 'form' => null])
+@props(['id' => null, 'title' => null, 'form' => null, 'footer' => null])
 
 <div class="modal fade" id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
