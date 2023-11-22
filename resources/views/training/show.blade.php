@@ -32,16 +32,18 @@
                     </span>
                 </div>
             </x-col>
-            <x-col lg="7" xl="7" md="5" sm="4"
-                class="d-flex justify-content-sm-end justify-content-start pt-sm-0 pt-3">
-                <x-button label="Edit" class="text-white me-2" color="warning" size="sm" route="web.training.edit"
-                    :parameter="$training" />
-                <form action="{{ route('web.training.destroy', $training) }}" method="post">
-                    @csrf
-                    @method('delete')
-                    <x-button label="Hapus" class="btn-delete" color="danger" size="sm" />
-                </form>
-            </x-col>
+            @if (auth()->user()->id == $training->id)
+                <x-col lg="7" xl="7" md="5" sm="4"
+                    class="d-flex justify-content-sm-end justify-content-start pt-sm-0 pt-3">
+                    <x-button label="Edit" class="text-white me-2" color="warning" size="sm"
+                        route="web.training.edit" :parameter="$training" />
+                    <form action="{{ route('web.training.destroy', $training) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <x-button label="Hapus" class="btn-delete" color="danger" size="sm" />
+                    </form>
+                </x-col>
+            @endif
         </x-row>
     </x-card>
 
@@ -68,7 +70,9 @@
                     {!! $training->content !!}
                 </x-slot:body>
             </x-card>
-            @include('training.topic.index')
+            @if (auth()->user()->id == $training->id)
+                @include('training.topic.index')
+            @endif
             @include('training.course.index')
         </x-col>
 

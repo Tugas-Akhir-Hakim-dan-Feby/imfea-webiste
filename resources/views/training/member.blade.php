@@ -15,7 +15,7 @@
 
     <x-row>
         <x-col lg="3" md="4" sm="6" xl="3" class="mb-4">
-            <x-link route="web.training.create">
+            <x-link route="web.training.all">
                 <x-card class="bg-primary h-100 shadow-lg">
                     <x-slot:body
                         class="h-100 d-flex justify-content-center flex-column align-items-center text-white text-center">
@@ -50,7 +50,7 @@
                     </x-slot:body>
                     <x-slot:footer class="d-flex justify-content-between align-items-center">
                         <x-button label="Detail" class="text-white w-100" color="info" size="sm"
-                            route="web.training.show" :parameter="$training" />
+                            route="web.training.show.slug" :parameter="$training->slug" />
                     </x-slot:footer>
                 </x-card>
             </x-col>

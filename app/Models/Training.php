@@ -56,4 +56,14 @@ class Training extends Model
     {
         return $this->hasMany(Course::class, 'training_id', 'id');
     }
+
+    public function participant(): HasOne
+    {
+        return $this->hasOne(TrainingParticipant::class, 'training_id', 'id');
+    }
+
+    public function participants(): HasMany
+    {
+        return $this->hasMany(TrainingParticipant::class, 'training_id', 'id');
+    }
 }

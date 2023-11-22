@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
-    protected $topic;
+    protected $topic, $training, $course;
 
-    public function __construct(Topic $topic)
+    public function __construct(Topic $topic, Training $training, Course $course)
     {
         $this->topic = $topic;
+        $this->training = $training;
+        $this->course = $course;
     }
 
     public function index()
@@ -59,6 +61,26 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         //
+    }
+
+    public function showSlug($trainingSlug, $courseSlug)
+    {
+        $training = $this->training->whereSlug($trainingSlug)->first();
+        if (!$training) {
+            abort(404);
+        }
+
+        $course = $this->course->whereSlug($courseSlug)->first();
+        if (!$course) {
+            abort(404);
+        }
+
+        $data = [
+            "training" => $training,
+            "course" => $course
+        ];
+
+        return view('templates.course', $data);
     }
 
     public function edit(Training $training, Course $course)

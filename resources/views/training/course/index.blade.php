@@ -2,7 +2,7 @@
     <x-slot:header class="d-flex justify-content-between align-items-center">
         <h3 class="fw-semibold">Daftar Materi</h3>
         <div>
-            @if ($training->topics->count() > 0)
+            @if (auth()->user()->id == $training->id && $training->topics->count() > 0)
                 <x-button label="Tambah Materi" class="text-white w-100" color="primary" size="sm"
                     route="web.course.create" :parameter="$training" />
             @endif
@@ -37,16 +37,18 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <h5 class="my-0">{{ $course->title }}</h5>
                                         <div class="d-flex">
-                                            <x-button label="Edit" class="text-white w-100 me-2" color="warning"
-                                                size="sm" route="web.course.edit" :parameter="['training' => $training, 'course' => $course]" />
-                                            <form
-                                                action="{{ route('web.course.destroy', ['training' => $training, 'course' => $course]) }}"
-                                                method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <x-button label="Hapus" class="btn-delete" color="danger"
-                                                    size="sm" />
-                                            </form>
+                                            @if (auth()->user()->id == $training->id)
+                                                <x-button label="Edit" class="text-white w-100 me-2" color="warning"
+                                                    size="sm" route="web.course.edit" :parameter="['training' => $training, 'course' => $course]" />
+                                                <form
+                                                    action="{{ route('web.course.destroy', ['training' => $training, 'course' => $course]) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <x-button label="Hapus" class="btn-delete" color="danger"
+                                                        size="sm" />
+                                                </form>
+                                            @endif
                                         </div>
                                     </li>
                                 @empty

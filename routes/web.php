@@ -111,7 +111,19 @@ Route::middleware(['auth', 'check.membership'])
         Route::resource('news', NewsController::class);
 
         Route::resource('training/{training}/topic', TopicController::class);
+
+        Route::get('training/{trainingSlug}/learn/course/{courseSlug}', [CourseController::class, 'showSlug'])
+            ->name('training.course.slug');
         Route::resource('training/{training}/course', CourseController::class);
+
+        Route::get('training/all', [TrainingController::class, 'all'])
+            ->name('training.all');
+        Route::get('training/load-more', [TrainingController::class, 'loadMore'])
+            ->name('training.load.more');
+        Route::get('training/detail/{slug}', [TrainingController::class, 'showSlug'])
+            ->name('training.show.slug');
+        Route::post('training/register/{training}', [TrainingController::class, 'register'])
+            ->name('training.register');
         Route::resource('training', TrainingController::class);
 
         Route::prefix('profile')->name('profile.')->group(function () {

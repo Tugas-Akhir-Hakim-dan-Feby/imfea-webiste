@@ -25,14 +25,62 @@ class TrainingController extends Controller
 
     public function index()
     {
-        $trainings = $this->training->paginate($this->perPage);
+        $trainings = $this->training->where(function ($query) {
+            if (
+                auth()->user()->isOperator()
+            ) {
+                $query->where('user_id', auth()->user()->id);
+            }
 
-        $data = [
+            if (
+                auth()->user()->isMember()
+            ) {
+                $query->whereHas('participant');
+            }
+        });
+
+        if (auth()->user()->isMember()) {
+            return view('training.member', [
+                "title" => "Pelatihan Saya",
+                "trainings" => $trainings->get()
+            ]);
+        }
+
+        return view('training.admin', [
             "title" => "Pelatihan",
-            "trainings" => $trainings
-        ];
+            "trainings" => $trainings->paginate($this->perPage)
+        ]);
+    }
 
-        return view('training.admin', $data);
+    public function all()
+    {
+        $this->perPage = 8;
+
+        $trainings = $this->training->where(function ($query) {
+            if (
+                auth()->user()->isMember()
+            ) {
+                $query->whereDoesntHave('participant');
+            }
+        });
+
+        return view('training.all', [
+            "title" => "Semua Pelatihan",
+            "trainings" => $trainings->paginate($this->perPage)
+        ]);
+    }
+
+    public function loadMore(Request $request)
+    {
+        $trainings = $this->training->where(function ($query) {
+            if (
+                auth()->user()->isMember()
+            ) {
+                $query->whereDoesntHave('participant');
+            }
+        })->paginate($this->perPage, ['*'], 'page', $request->page);
+
+        return view('webinar.load-more', compact('trainings'))->render();
     }
 
     public function create()
@@ -74,6 +122,23 @@ class TrainingController extends Controller
         }
     }
 
+    public function register(Training $training)
+    {
+        DB::beginTransaction();
+
+        try {
+            $training->participant()->create([
+                "user_id" => auth()->user()->id
+            ]);
+
+            DB::commit();
+            return MessageFixer::successMessage("Selamat anda berhasil terdaftar di `$training->title`.", route('web.training.index'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.training.index'));
+        }
+    }
+
     public function show(Training $training)
     {
         $data = [
@@ -82,6 +147,17 @@ class TrainingController extends Controller
         ];
 
         return view('training.show', $data);
+    }
+
+    public function showSlug($slug)
+    {
+        $training = $this->training->whereSlug($slug)->first();
+
+        if (!$training) {
+            abort(404);
+        }
+
+        return $this->show($training);
     }
 
     public function edit(Training $training)
