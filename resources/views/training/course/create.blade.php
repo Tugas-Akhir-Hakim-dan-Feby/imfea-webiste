@@ -16,6 +16,7 @@
     <x-header-page :title="$title" :options="[
         ['link' => route('web.home.index'), 'text' => 'Dashboard'],
         ['link' => route('web.training.index'), 'text' => 'Pelatihan'],
+        ['link' => route('web.training.show', $training), 'text' => $training->title],
     ]" />
 
     @if (session('dangerMessage'))
@@ -24,21 +25,27 @@
         </x-alert>
     @endif
 
-    <form action="{{ route('web.training.store') }}" method="post" enctype="multipart/form-data" class="needs-validation"
-        novalidate>
+    <form action="{{ route('web.course.store', $training) }}" method="post" enctype="multipart/form-data"
+        class="needs-validation" novalidate>
         @csrf
         <x-row>
             <x-col xl="8" lg="8" md="7">
                 <x-card>
-                    <x-input label="Judul Pelatihan" id="title" required autofocus value="{{ old('title') }}" />
-                    <x-textarea label="Konten Pelatihan" id="content" required value="{{ old('content') }}" />
+                    <x-input label="Judul Materi" id="title" required autofocus :value="old('title')" />
+                    <x-textarea label="Konten Materi" id="content" required :value="old('content')" />
                 </x-card>
             </x-col>
             <x-col xl="4" lg="4" md="5">
                 <x-card>
                     <x-slot:body>
-                        <x-input label="Thumbnail Pelatihan" id="image_thumbnail" required type="file"
-                            accept="image/*" />
+                        <x-select label="Topik Materi" id="topic_id" required>
+                            <option selected disabled />
+                            @foreach ($training->topics as $topic)
+                                <option value="{{ $topic->id }}" {{ old('topic_id') == $topic->id ? 'selected' : '' }}>
+                                    {{ $topic->title }}</option>
+                            @endforeach
+                        </x-select>
+                        <x-input label="Link Video" id="link_video" required :value="old('link_video')" />
                     </x-slot:body>
                     <x-slot:footer class="d-flex justify-content-between align-items-center">
                         <x-button size="sm" color="secondary" route="web.training.index" label="Batal" />

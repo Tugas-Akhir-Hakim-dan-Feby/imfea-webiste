@@ -1,6 +1,6 @@
 <ul class="list-group mb-3 shadow">
     <li class="list-group-item d-flex justify-content-between align-items-center">
-        <h3 class="fw-normal text-secondary">Daftar Topik Materi</h3>
+        <h3 class="fw-semibold text-secondary">Daftar Topik Materi</h3>
         <div>
             <x-button label="Tambah Topic" class="text-white w-100" color="primary" size="sm" toggle="modal"
                 target="#addNewTopic" />

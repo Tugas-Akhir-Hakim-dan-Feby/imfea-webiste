@@ -1,6 +1,6 @@
 <ul class="list-group mb-3 shadow">
     <li class="list-group-item">
-        <h3 class="fw-normal text-secondary">Manfaat</h3>
+        <h3 class="fw-semibold text-secondary">Manfaat</h3>
     </li>
     <li class="list-group-item d-flex align-items-center">
         <img src="{{ asset('assets/images/certificate.jpg') }}" height="50" width="50">

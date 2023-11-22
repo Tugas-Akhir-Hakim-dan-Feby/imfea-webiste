@@ -125,7 +125,7 @@ class TrainingController extends Controller
             return MessageFixer::successMessage("selamat data `$training->title` berhasil disimpan.", route('web.training.show', $training));
         } catch (\Throwable $th) {
             DB::rollBack();
-            return MessageFixer::dangerMessage($th->getMessage(), route('web.training.update', $training));
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.training.edit', $training));
         }
     }
 

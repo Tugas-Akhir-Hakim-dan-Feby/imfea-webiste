@@ -51,4 +51,9 @@ class Training extends Model
     {
         return $this->hasMany(Topic::class, 'training_id', 'id');
     }
+
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class, 'training_id', 'id');
+    }
 }

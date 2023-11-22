@@ -1,6 +1,6 @@
 <x-card>
     <x-slot:header>
-        <h3 class="fw-normal">Mentor</h3>
+        <h3 class="fw-semibold">Mentor</h3>
     </x-slot:header>
     <x-slot:body>
         <div class="d-flex align-items-center">

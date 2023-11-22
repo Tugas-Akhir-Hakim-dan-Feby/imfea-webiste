@@ -9,10 +9,9 @@
         <x-breadcrumb class="d-sm-block d-none" :currentPage="$title ?? 'Dashboard'" :pages="[
             [
                 ['link' => route('web.home.index'), 'text' => 'Dashboard'],
-                ['link' => route('web.training.index'), 'text' => 'training'],
+                ['link' => route('web.training.index'), 'text' => 'Pelatihan'],
             ],
         ]" />
-
 
         <h2 class="fw-normal text-white">{{ $title }}</h2>
 
@@ -62,7 +61,7 @@
         <x-col lg="8" xl="8" md="8">
             <x-card>
                 <x-slot:header>
-                    <h3 class="fw-normal">Deskripsi Pelatihan</h3>
+                    <h3 class="fw-semibold">Deskripsi Pelatihan</h3>
                 </x-slot:header>
 
                 <x-slot:body>
