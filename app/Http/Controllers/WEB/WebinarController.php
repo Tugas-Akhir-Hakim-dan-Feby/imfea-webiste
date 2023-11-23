@@ -36,7 +36,7 @@ class WebinarController extends Controller
             if (
                 auth()->user()->isMember()
             ) {
-                $query->whereHas('participant');
+                $query->whereHas('webinarParticipant');
             }
         });
 
@@ -68,7 +68,7 @@ class WebinarController extends Controller
             if (
                 auth()->user()->isMember()
             ) {
-                $query->whereDoesntHave('participant');
+                $query->whereDoesntHave('webinarParticipant');
             }
 
             $query->where('activity_date', '>=', $dateNow);
@@ -82,7 +82,13 @@ class WebinarController extends Controller
 
     public function loadMore(Request $request)
     {
-        $webinars = $this->webinar->where('user_id', auth()->user()->id)->paginate($this->perPage, ['*'], 'page', $request->page);
+        $webinars = $this->webinar->where(function ($query) {
+            if (
+                auth()->user()->isMember()
+            ) {
+                $query->whereDoesntHave('webinarParticipant');
+            }
+        })->paginate($this->perPage, ['*'], 'page', $request->page);
 
         return view('webinar.load-more', compact('webinars'))->render();
     }

@@ -75,9 +75,25 @@ class CourseController extends Controller
             abort(404);
         }
 
+        $nextCourse = $course->topic
+            ->courses()
+            ->where('id', '>', $course->id)
+            ->first();
+
+        if (!$nextCourse) {
+            $nextCourse = $training->topics()
+                ->where('id', '>', $course->topic_id)
+                ->first();
+            if ($nextCourse) {
+                $nextCourse = $nextCourse->courses()
+                    ->first();
+            }
+        }
+
         $data = [
             "training" => $training,
-            "course" => $course
+            "course" => $course,
+            "nextCourse" => $nextCourse,
         ];
 
         return view('templates.course', $data);

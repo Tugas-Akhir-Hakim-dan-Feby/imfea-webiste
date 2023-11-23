@@ -32,7 +32,7 @@
                     </span>
                 </div>
             </x-col>
-            @if (auth()->user()->id == $training->id)
+            @if (auth()->user()->id == $training->user_id)
                 <x-col lg="7" xl="7" md="5" sm="4"
                     class="d-flex justify-content-sm-end justify-content-start pt-sm-0 pt-3">
                     <x-button label="Edit" class="text-white me-2" color="warning" size="sm"
@@ -70,7 +70,7 @@
                     {!! $training->content !!}
                 </x-slot:body>
             </x-card>
-            @if (auth()->user()->id == $training->id)
+            @if (auth()->user()->id == $training->user_id)
                 @include('training.topic.index')
             @endif
             @include('training.course.index')

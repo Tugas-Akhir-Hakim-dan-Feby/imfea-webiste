@@ -35,7 +35,7 @@ class TrainingController extends Controller
             if (
                 auth()->user()->isMember()
             ) {
-                $query->whereHas('participant');
+                $query->whereHas('trainingParticipant');
             }
         });
 
@@ -60,7 +60,7 @@ class TrainingController extends Controller
             if (
                 auth()->user()->isMember()
             ) {
-                $query->whereDoesntHave('participant');
+                $query->whereDoesntHave('trainingParticipant');
             }
         });
 
@@ -76,7 +76,7 @@ class TrainingController extends Controller
             if (
                 auth()->user()->isMember()
             ) {
-                $query->whereDoesntHave('participant');
+                $query->whereDoesntHave('trainingParticipant');
             }
         })->paginate($this->perPage, ['*'], 'page', $request->page);
 

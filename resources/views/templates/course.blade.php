@@ -30,7 +30,6 @@
             </a>
 
             <div class="h-100" id="leftside-menu-container" data-simplebar="">
-
                 <ul class="side-nav">
 
                     @foreach ($training->topics as $topic)
@@ -42,13 +41,13 @@
                             </a>
                             <div class="collapse" id="sidebar{{ $topic->slug }}">
                                 <ul class="side-nav-second-level">
-                                    @foreach ($topic->courses as $course)
+                                    @foreach ($topic->courses as $listCourse)
                                         <li>
                                             <x-link route="web.training.course.slug" :parameter="[
                                                 'trainingSlug' => $training->slug,
-                                                'courseSlug' => $course->slug,
+                                                'courseSlug' => $listCourse->slug,
                                             ]"
-                                                :label="$course->title" />
+                                                :label="$listCourse->title" />
                                         </li>
                                     @endforeach
                                 </ul>
@@ -57,7 +56,6 @@
                     @endforeach
 
                 </ul>
-
                 <div class="clearfix"></div>
 
             </div>
@@ -66,34 +64,16 @@
         <div class="content-page">
             <div class="content">
                 <div class="navbar-custom">
-                    <ul class="list-unstyled topbar-menu float-end mb-0">
-                        <li class="dropdown notification-list">
-                            <a class="nav-link nav-user arrow-none me-0" href="#" role="button">
-                                {{-- <span class="account-user-avatar">
-                                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
-                                </span>
-                                <span>
-                                    <span class="account-user-name">Soeng Souy</span>
-                                    <span class="account-position">Founder</span>
-                                </span> --}}
-                            </a>
-                        </li>
-
-                    </ul>
                     <button class="button-menu-mobile open-left">
                         <i class="mdi mdi-menu"></i>
                     </button>
                 </div>
 
                 <div class="container-fluid">
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box">
-                                <h4 class="page-title">{{ $course->title }}</h4>
-                            </div>
-                        </div>
-                    </div>
+                    <x-header-page :title="$course->title" :options="[
+                        ['link' => route('web.home.index'), 'text' => 'Dashboard'],
+                        ['link' => route('web.training.show', $training), 'text' => $training->title],
+                    ]" />
 
                     <div class="row">
                         <div class="col-12">
@@ -110,11 +90,33 @@
                                     {!! $course->content !!}
                                 </div>
                             </div>
+                            <div class="card card-rounded">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4>Apakah sudah paham?</h4>
+                                        <div>
+                                            @if ($nextCourse)
+                                                <form
+                                                    action="{{ route('web.training.course.slug', [
+                                                        'trainingSlug' => $training->slug,
+                                                        'courseSlug' => $nextCourse->slug,
+                                                    ]) }}"
+                                                    method="get">
+                                                    @csrf
+                                                    <x-button label="Ya, Saya Sudah Paham" color="primary"
+                                                        size="sm" type="submit" />
+                                                </form>
+                                            @else
+                                                <x-button label="Ya, Saya Sudah Paham" class="text-white me-2"
+                                                    color="primary" size="sm" />
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <footer class="footer">
