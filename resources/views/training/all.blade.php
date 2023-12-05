@@ -10,11 +10,7 @@
         ['link' => route('web.training.index'), 'text' => 'Pelatihan'],
     ]" />
 
-    @if (session('successMessage'))
-        <x-alert class="mb-3" color="success">
-            {{ session('successMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <x-row id="loadMore">
         @foreach ($trainings as $training)

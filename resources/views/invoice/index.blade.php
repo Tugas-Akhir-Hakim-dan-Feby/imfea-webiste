@@ -7,11 +7,7 @@
 @section('content')
     <x-header-page :title="$title" :options="[['link' => route('web.home.index'), 'text' => 'Dashboard']]" />
 
-    @if (session('dangerMessage'))
-        <x-alert class="mb-3" color="danger">
-            {{ session('dangerMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <x-card>
         <x-table :isComplete="true" class="table-bordered table-hover">

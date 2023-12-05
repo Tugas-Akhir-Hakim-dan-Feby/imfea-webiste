@@ -52,6 +52,16 @@ class Training extends Model
         return $this->hasMany(Topic::class, 'training_id', 'id');
     }
 
+    public function topicMaterials(): HasMany
+    {
+        return $this->hasMany(Topic::class, 'training_id', 'id')->where('is_exam', Topic::IS_MATERIAL);
+    }
+
+    public function topicExams(): HasMany
+    {
+        return $this->hasMany(Topic::class, 'training_id', 'id')->where('is_exam', Topic::IS_EXAM);
+    }
+
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class, 'training_id', 'id');

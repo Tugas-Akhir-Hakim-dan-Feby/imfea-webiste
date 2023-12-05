@@ -28,4 +28,15 @@ class Course extends Model
     {
         return $this->hasOne(Topic::class, 'id', 'topic_id');
     }
+
+    public function visitor(): HasOne
+    {
+        return $this->hasOne(CourseVisitor::class, 'course_id', 'id');
+    }
+
+    public function courseVisitor(): HasOne
+    {
+        return $this->hasOne(CourseVisitor::class, 'course_id', 'id')
+            ->where('user_id', auth()->user()->id);
+    }
 }

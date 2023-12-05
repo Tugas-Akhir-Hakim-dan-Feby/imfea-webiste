@@ -7,6 +7,7 @@ use App\Http\Controllers\WEB\Auth\RegisterController;
 use App\Http\Controllers\WEB\Auth\ResetPasswordController;
 use App\Http\Controllers\WEB\Auth\VerificationController;
 use App\Http\Controllers\WEB\CourseController;
+use App\Http\Controllers\WEB\ExamController;
 use App\Http\Controllers\WEB\HomeController;
 use App\Http\Controllers\WEB\InvoiceController;
 use App\Http\Controllers\WEB\MembercardController;
@@ -114,7 +115,12 @@ Route::middleware(['auth', 'check.membership'])
 
         Route::get('training/{trainingSlug}/learn/course/{courseSlug}', [CourseController::class, 'showSlug'])
             ->name('training.course.slug');
+        Route::post('training/{trainingSlug}/learn/course/{courseSlug}', [CourseController::class, 'processSubmitted'])
+            ->name('training.course.slug.process');
+
         Route::resource('training/{training}/course', CourseController::class);
+
+        Route::resource('training/{training}/exam', ExamController::class);
 
         Route::get('training/all', [TrainingController::class, 'all'])
             ->name('training.all');

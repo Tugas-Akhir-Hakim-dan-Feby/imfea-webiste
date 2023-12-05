@@ -11,11 +11,7 @@
         ['link' => route('web.news.index'), 'text' => 'Berita'],
     ]" />
 
-    @if (session('successMessage'))
-        <x-alert class="mb-3" color="success">
-            {{ session('successMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <x-row>
         <x-col>

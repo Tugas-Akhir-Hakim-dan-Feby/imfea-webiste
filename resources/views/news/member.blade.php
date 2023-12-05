@@ -8,11 +8,7 @@
 @section('content')
     <x-header-page :title="$title" :options="[['link' => route('web.home.index'), 'text' => 'Dashboard']]" />
 
-    @if (session('successMessage'))
-        <x-alert class="mb-3" color="success">
-            {{ session('successMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <x-row>
         @foreach ($news as $news)

@@ -47,7 +47,13 @@
                                                 'trainingSlug' => $training->slug,
                                                 'courseSlug' => $listCourse->slug,
                                             ]"
-                                                :label="$listCourse->title" />
+                                                color="{{ $listCourse->courseVisitor ? 'success' : '' }}"
+                                                class="d-flex justify-content-between {{ !$listCourse->courseVisitor ? 'disable-link' : '' }}">
+                                                {{ $listCourse->title }}
+                                                @if ($listCourse->courseVisitor)
+                                                    <span class="badge bg-success text-sm">Selesai</span>
+                                                @endif
+                                            </x-link>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -75,6 +81,17 @@
                         ['link' => route('web.training.show', $training), 'text' => $training->title],
                     ]" />
 
+                    @if (session('dangerMessage'))
+                        <x-alert class="mb-3" color="danger" dismissible>
+                            {{ session('dangerMessage') }}
+                        </x-alert>
+                    @endif
+                    @if (session('successMessage'))
+                        <x-alert class="mb-3" color="success" dismissible>
+                            {{ session('successMessage') }}
+                        </x-alert>
+                    @endif
+
                     <div class="row">
                         <div class="col-12">
                             <div class="card card-rounded">
@@ -97,18 +114,20 @@
                                         <div>
                                             @if ($nextCourse)
                                                 <form
-                                                    action="{{ route('web.training.course.slug', [
+                                                    action="{{ route('web.training.course.slug.process', [
                                                         'trainingSlug' => $training->slug,
                                                         'courseSlug' => $nextCourse->slug,
                                                     ]) }}"
-                                                    method="get">
+                                                    method="post">
                                                     @csrf
+                                                    <input type="hidden" name="course_id"
+                                                        value="{{ $course->id }}" />
                                                     <x-button label="Ya, Saya Sudah Paham" color="primary"
                                                         size="sm" type="submit" />
                                                 </form>
                                             @else
-                                                <x-button label="Ya, Saya Sudah Paham" class="text-white me-2"
-                                                    color="primary" size="sm" />
+                                                <x-button label="Selesai" class="text-white me-2" color="primary"
+                                                    size="sm" />
                                             @endif
                                         </div>
                                     </div>

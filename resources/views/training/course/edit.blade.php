@@ -19,11 +19,7 @@
         ['link' => route('web.training.show', $training), 'text' => $training->title],
     ]" />
 
-    @if (session('dangerMessage'))
-        <x-alert class="mb-3" color="danger" dismissible>
-            {{ session('dangerMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <form action="{{ route('web.course.update', ['training' => $training, 'course' => $course]) }}" method="post"
         enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -51,7 +47,8 @@
                         <x-input label="Link Video" id="link_video" required :value="old('link_video', $course->link_video)" />
                     </x-slot:body>
                     <x-slot:footer class="d-flex justify-content-between align-items-center">
-                        <x-button size="sm" color="secondary" route="web.training.index" label="Batal" />
+                        <x-button size="sm" color="secondary" route="web.training.show" :parameter="$training"
+                            label="Batal" />
                         <x-button size="sm" type="submit" label="Simpan" />
                     </x-slot:footer>
                 </x-card>

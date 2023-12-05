@@ -16,7 +16,7 @@
             </div>
         @endif
         <div class="accordion custom-accordion" id="custom-accordion-one">
-            @forelse ($training->topics as $topic)
+            @forelse ($training->topicMaterials as $topic)
                 <div class="card mb-0">
                     <div class="card-header" id="heading{{ $topic->slug }}">
                         <h5 class="m-0">

@@ -20,11 +20,7 @@
         ['link' => route('web.invoice.index'), 'text' => 'Tagihan'],
     ]" />
 
-    @if (session('dangerMessage'))
-        <x-alert class="mb-3" color="danger">
-            {{ session('dangerMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <x-row>
         <x-col xl="9" lg="9" md="9">

@@ -1,33 +1,36 @@
 @props([
     'id' => null,
     'label' => null,
-    'type' => 'text',
+    'type' => 'checkbox',
     'size' => null,
-    'rows' => null,
-    'cols' => null,
     'value' => null,
     'margin' => 'mb-3',
     'autofocus' => false,
     'required' => false,
-    'placeholder' => '',
+    'disabled' => null,
+    'readonly' => null,
     'error' => null,
 ])
 
 @php
-    $attributes = $attributes->class(['form-control', "form-control-$size" => $size, 'is-invalid' => $errors->has($id)])->merge([
+    $attributes = $attributes->class(['form-check-input', 'is-invalid' => $errors->has($id)])->merge([
+        'type' => $type,
         'name' => $id,
         'id' => $id,
-        'autofocus' => $autofocus,
         'required' => $required,
-        'placeholder' => $placeholder,
-        'rows' => $rows,
-        'cols' => $cols,
+        'value' => $value,
+        'autofocus' => $autofocus,
+        'disabled' => $disabled,
+        'readonly' => $readonly,
+        'style' => 'cursor: pointer',
     ]);
 @endphp
 
-<div @class([$margin])>
-    <x-label :for="$id" :label="$label" />
-    <textarea {{ $attributes }}>{!! $value ?? $slot !!}</textarea>
+<div class="form-check mb-3">
+    <input {{ $attributes }}>
+    <label class="form-check-label" for="{{ $id }}">
+        {{ $label ?? $slot }}
+    </label>
     <div class="invalid-feedback">
         @if ($errors->has($id))
             @error($id)

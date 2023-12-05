@@ -99,6 +99,38 @@ class CourseController extends Controller
         return view('templates.course', $data);
     }
 
+    public function processSubmitted(Request $request, $trainingSlug, $courseSlug)
+    {
+        DB::beginTransaction();
+
+        $training = $this->training->whereSlug($trainingSlug)->first();
+        if (!$training) {
+            abort(404);
+        }
+
+        $course = $this->course->findOrFail($request->course_id);
+
+        try {
+            if (!$course->visitor) {
+                $course->visitor()->create([
+                    "user_id" => auth()->user()->id
+                ]);
+            }
+
+            DB::commit();
+            return MessageFixer::successMessage("pelajaran ini berhasil kamu selesaikan. lanjut ke materi selanjutnya ya.", route('web.training.course.slug', [
+                'trainingSlug' => $training->slug,
+                'courseSlug' => $courseSlug,
+            ]));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.training.course.slug', [
+                'trainingSlug' => $training->slug,
+                'courseSlug' => $course->slug,
+            ]));
+        }
+    }
+
     public function edit(Training $training, Course $course)
     {
         $data = [

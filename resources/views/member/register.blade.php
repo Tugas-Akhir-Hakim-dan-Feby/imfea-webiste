@@ -10,11 +10,7 @@
 @section('content')
     <x-header-page :title="$title" :options="[['link' => route('web.home.index'), 'text' => 'Dashboard']]" />
 
-    @if (session('dangerMessage'))
-        <x-alert class="mb-3" color="danger">
-            {{ session('dangerMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <form action="{{ route('web.member.register.process') }}" method="post" enctype="multipart/form-data"
         class="needs-validation" novalidate>

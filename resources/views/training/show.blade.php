@@ -47,17 +47,7 @@
         </x-row>
     </x-card>
 
-    @if (session('successMessage'))
-        <x-alert class="mb-3" color="success">
-            {{ session('successMessage') }}
-        </x-alert>
-    @endif
-
-    @if (session('dangerMessage'))
-        <x-alert class="mb-3" color="danger">
-            {{ session('dangerMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <x-row>
         <x-col lg="8" xl="8" md="8">
@@ -72,6 +62,7 @@
             </x-card>
             @if (auth()->user()->id == $training->user_id)
                 @include('training.topic.index')
+                @include('training.exam.index')
             @endif
             @include('training.course.index')
         </x-col>

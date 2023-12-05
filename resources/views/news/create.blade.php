@@ -18,11 +18,7 @@
         ['link' => route('web.news.index'), 'text' => 'Berita'],
     ]" />
 
-    @if (session('dangerMessage'))
-        <x-alert class="mb-3" color="danger" dismissible>
-            {{ session('dangerMessage') }}
-        </x-alert>
-    @endif
+    @include('templates.alert')
 
     <form action="{{ route('web.news.store') }}" method="post" enctype="multipart/form-data" class="needs-validation"
         novalidate>
