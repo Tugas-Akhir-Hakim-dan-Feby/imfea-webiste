@@ -52,7 +52,6 @@
                             {{ $type['type'] }}</option>
                     @endforeach
                 </x-select>
-                <x-button id="addAnswer" label="Tambah Jawaban" size="sm" />
             </x-slot:header>
 
             <div id="multipleChoice">
@@ -126,19 +125,6 @@
                 let counter = $(".duplication:last").data("id");
                 let answers = []
 
-                @if ($exam)
-                    let keyExist = null;
-                    let answerExist = null;
-                    @foreach ($exam->answers as $index => $answer)
-                        keyExist = {{ $index }};
-                        answerExist = {{ $answer->answer }};
-                        answers.push({
-                            key: keyExist,
-                            value: answerExist
-                        })
-                    @endforeach
-                @endif
-
                 $("#addAnswer").on('click', function() {
                     let newElement;
                     counter++;
@@ -146,7 +132,7 @@
                     $(`.duplication:last`).clone(true)
                         .map(function() {
                             newElement = $(this).attr("id", `answer-${counter}`).attr("data-id",
-                                counter)
+                                counter).find("")
                         })
 
                     if ($("#answer-" + (counter - 1)).length) {
@@ -157,17 +143,6 @@
 
                     $('.duplication').find("button").show();
                     $("#answer-" + counter).find("button").hide();
-                })
-
-                $("body").on("change", "#answers", function() {
-                    let key = $(this).parents('.duplication').attr('id');
-                    let value = $(this).val();
-                    answers.push({
-                        key: key,
-                        value: value
-                    })
-                    console.log(answers);
-                    initSelectCorrectAnswer(answers)
                 })
 
                 $('body').on('click', '#deleteAnswer', function() {

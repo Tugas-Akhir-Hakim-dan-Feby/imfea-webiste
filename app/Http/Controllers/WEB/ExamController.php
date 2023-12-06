@@ -7,6 +7,7 @@ use App\Http\Enums\ExamTypeEnum;
 use App\Http\Facades\MessageFixer;
 use App\Http\Requests\WEB\Exam\ExamRequest;
 use App\Models\Exam;
+use App\Models\ExamAnswer;
 use App\Models\Topic;
 use App\Models\Training;
 use Illuminate\Http\Request;
@@ -14,11 +15,12 @@ use Illuminate\Support\Facades\DB;
 
 class ExamController extends Controller
 {
-    protected $topic;
+    protected $topic, $examAnswer;
 
-    public function __construct(Topic $topic)
+    public function __construct(Topic $topic, ExamAnswer $examAnswer)
     {
         $this->topic = $topic;
+        $this->examAnswer = $examAnswer;
     }
 
     public function index()
@@ -48,14 +50,15 @@ class ExamController extends Controller
             $exam = $topic->exams()->create($request->all());
 
             if ($request->has('answers')) {
-                foreach ($request->answers as $answer) {
-                    $exam->answers()->create([
+                $answers = [];
+                foreach ($request->answers as $key => $answer) {
+                    $answers[$key] = $exam->answers()->create([
                         "answer" => $answer
                     ]);
                 }
 
                 $exam->update([
-                    "exam_answer_id" => $request->correct_answer
+                    "exam_answer_id" => $answers[$request->correct_answer]->id
                 ]);
             }
 
@@ -84,13 +87,50 @@ class ExamController extends Controller
         return view('training.exam.form', $data);
     }
 
-    public function update(Request $request, Exam $exam)
+    public function update(ExamRequest $request, Training $training, Exam $exam)
     {
-        //
+        DB::beginTransaction();
+
+        $topic = $this->topic->findOrFail($request->topic_id);
+
+        try {
+            $exam->update($request->all());
+
+            $exam->answers()->delete();
+
+            if ($request->has('answers')) {
+                $answers = [];
+                foreach ($request->answers as $key => $answer) {
+                    $answers[$key] = $exam->answers()->create([
+                        "answer" => $answer
+                    ]);
+                }
+
+                $exam->update([
+                    "exam_answer_id" => $answers[$request->correct_answer]->id
+                ]);
+            }
+
+            DB::commit();
+            return MessageFixer::successMessage("selamat data pertanyaan berhasil disimpan.", route('web.training.show', $training));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.exam.edit', ["exam" => $exam, "training" => $training]));
+        }
     }
 
-    public function destroy(Exam $exam)
+    public function destroy(Training $training, Exam $exam)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $exam->delete();
+
+            DB::commit();
+            return MessageFixer::successMessage("selamat data pertanyaan berhasil dihapus.", route('web.training.show', $training));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.training.show', $training));
+        }
     }
 }
