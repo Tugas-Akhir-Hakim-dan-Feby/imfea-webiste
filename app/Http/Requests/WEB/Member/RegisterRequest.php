@@ -31,7 +31,7 @@ class RegisterRequest extends FormRequest
             "date_birth" => "required",
             "citizenship" => "required",
             "address" => "required",
-            "postal_code" => "required|numeric|max:6",
+            "postal_code" => "required|max:6",
             "phone" => "required|numeric|min:12",
             "image_pas_photo" => "required|image|mimes:png,jpg,jpeg",
             "document_cv" => "required|file|mimes:pdf",

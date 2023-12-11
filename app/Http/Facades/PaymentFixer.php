@@ -33,6 +33,7 @@ class PaymentFixer
             "external_id" => $this->externalId,
             "description" => $description,
             "amount" => $amount,
+            "success_redirect_url" => route('web.invoice.show', $this->externalId)
         ];
 
         $response = Http::withHeaders([

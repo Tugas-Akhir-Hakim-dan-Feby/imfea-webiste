@@ -14,8 +14,11 @@ class Exam extends Model
     const TYPE_MULTIPLE_CHOICE = 0;
     const TYPE_ESSAY = 1;
 
+    const EXAM_ACTIVE = 1;
+    const EXAM_NONACTIVE = 0;
+
     protected $fillable = [
-        "topic_id",
+        "training_id",
         "exam_answer_id",
         "type",
         "question",
@@ -29,5 +32,11 @@ class Exam extends Model
     public function correctAnswer(): HasOne
     {
         return $this->hasOne(ExamAnswer::class, 'id', 'exam_answer_id');
+    }
+
+    public function memberAnswerByAuth() : HasOne
+    {
+        return $this->hasOne(MemberAnswer::class, 'exam_id', 'id')
+        ->where('user_id', auth()->user()->id);
     }
 }

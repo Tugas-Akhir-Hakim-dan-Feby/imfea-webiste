@@ -34,7 +34,8 @@ class ExamController extends Controller
             "title" => "Tambah Pertanyaan",
             "training" => $training,
             "exam" => null,
-            "questionTypes" => ExamTypeEnum::get()
+            "questionTypes" => ExamTypeEnum::get(),
+            "action" => route('web.exam.store', ["training" => $training]),
         ];
 
         return view('training.exam.form', $data);
@@ -44,10 +45,8 @@ class ExamController extends Controller
     {
         DB::beginTransaction();
 
-        $topic = $this->topic->findOrFail($request->topic_id);
-
         try {
-            $exam = $topic->exams()->create($request->all());
+            $exam = $training->exams()->create($request->all());
 
             if ($request->has('answers')) {
                 $answers = [];
@@ -63,11 +62,38 @@ class ExamController extends Controller
             }
 
             DB::commit();
-            return MessageFixer::successMessage("selamat data pertanyaan `$topic->title` berhasil disimpan.", route('web.training.show', $training));
+            return MessageFixer::successMessage("selamat data pertanyaan berhasil disimpan.", route('web.training.show', $training));
         } catch (\Throwable $th) {
             DB::rollBack();
             return MessageFixer::dangerMessage($th->getMessage(), route('web.exam.create', $training));
         }
+    }
+
+    public function activate(Training $training)
+    {
+        DB::beginTransaction();
+
+        try {
+            if ($training->exam_active == 1) {
+                $training->exams()->delete();
+            }
+
+            $training->update([
+                "exam_active" => $training->exam_active == Exam::EXAM_ACTIVE ? Exam::EXAM_NONACTIVE : Exam::EXAM_ACTIVE
+            ]);
+
+            DB::commit();
+            return MessageFixer::successMessage("selamat data pertanyaan berhasil diaktifkan.", route('web.training.show', $training));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.exam.show', $training));
+        }
+    }
+
+    public function checkTime(Training $training, $id)
+    {
+        $trainingParticipant = $training->trainingParticipant()->where('user_id', $id)->first();
+        return MessageFixer::customApiMessage(MessageFixer::SUCCESS, 'data berhasil diambil.', MessageFixer::HTTP_OK, $trainingParticipant);
     }
 
     public function show(Training $training, Exam $exam)
@@ -81,7 +107,8 @@ class ExamController extends Controller
             "title" => "Edit Pertanyaan",
             "training" => $training,
             "exam" => $exam,
-            "questionTypes" => ExamTypeEnum::get()
+            "questionTypes" => ExamTypeEnum::get(),
+            "action" => route('web.exam.update', ["exam" => $exam, "training" => $training]),
         ];
 
         return view('training.exam.form', $data);
@@ -90,8 +117,6 @@ class ExamController extends Controller
     public function update(ExamRequest $request, Training $training, Exam $exam)
     {
         DB::beginTransaction();
-
-        $topic = $this->topic->findOrFail($request->topic_id);
 
         try {
             $exam->update($request->all());

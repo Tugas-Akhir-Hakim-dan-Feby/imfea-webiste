@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\WEB\Exam;
+namespace App\Http\Requests\WEB\Operator;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExamRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,8 +22,17 @@ class ExamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "question" => "required",
-            "type" => "required|in:0,1",
+            "nama" => "required",
+            "email" => "required",
+            "password" => bcrypt('Password123!'),
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            "nama" => "Nama",
+            "email" => "Email",
+            "password" => "Password",
         ];
     }
 }

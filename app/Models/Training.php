@@ -22,6 +22,7 @@ class Training extends Model
         "slug",
         "thumbnail",
         "content",
+        "exam_active",
         "status",
         "url",
         "start_date",
@@ -57,9 +58,9 @@ class Training extends Model
         return $this->hasMany(Topic::class, 'training_id', 'id')->where('is_exam', Topic::IS_MATERIAL);
     }
 
-    public function topicExams(): HasMany
+    public function exams(): HasMany
     {
-        return $this->hasMany(Topic::class, 'training_id', 'id')->where('is_exam', Topic::IS_EXAM);
+        return $this->hasMany(Exam::class, 'training_id', 'id');
     }
 
     public function courses(): HasMany

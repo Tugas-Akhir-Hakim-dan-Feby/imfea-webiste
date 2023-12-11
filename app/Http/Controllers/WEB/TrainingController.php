@@ -7,6 +7,7 @@ use App\Http\Facades\MessageFixer;
 use App\Http\Requests\WEB\Training\CreateRequest;
 use App\Http\Requests\WEB\Training\UpdateRequest;
 use App\Models\Training;
+use App\Models\TrainingParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -14,13 +15,14 @@ use Illuminate\Support\Facades\File;
 
 class TrainingController extends Controller
 {
-    protected $training;
+    protected $training, $trainingParticipant;
 
     protected $perPage = 7;
 
-    public function __construct(Training $training)
+    public function __construct(Training $training, TrainingParticipant $trainingParticipant)
     {
         $this->training = $training;
+        $this->trainingParticipant = $trainingParticipant;
     }
 
     public function index()
@@ -83,6 +85,16 @@ class TrainingController extends Controller
         return view('webinar.load-more', compact('trainings'))->render();
     }
 
+    public function participant(Training $training)
+    {
+        $data = [
+            "title" => "Daftar Peserta",
+            "training" => $training
+        ];
+
+        return view('training.participant', $data);
+    }
+
     public function create()
     {
         $data = [
@@ -139,8 +151,33 @@ class TrainingController extends Controller
         }
     }
 
+    public function resetTest(Training $training, $id)
+    {
+        DB::beginTransaction();
+
+        $trainingParticipant = $this->trainingParticipant->findOrFail($id);
+
+        try {
+            $trainingParticipant->memberAnswers()->delete();
+            $trainingParticipant->update([
+                "check_in_exam" => null,
+                "check_out_exam" => null,
+            ]);
+
+            DB::commit();
+            return MessageFixer::successMessage("data ujian `".$trainingParticipant->user->name."` berhasil direset.", route('web.training.participant', $training));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.training.index'));
+        }
+    }
+
     public function show(Training $training)
     {
+        if ($training->topics->count() < 1 || $training->topicMaterials[0]->courses->count() < 1) {
+            return MessageFixer::dangerMessage("Mohon maaf pelatihan belum siap dimulai!", route('web.training.index'));
+        }
+
         $data = [
             "title" => $training->title,
             "training" => $training
