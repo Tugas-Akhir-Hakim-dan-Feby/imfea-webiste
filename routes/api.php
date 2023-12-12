@@ -10,6 +10,7 @@ use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\Region\CityController;
 use App\Http\Controllers\API\WebinarController;
 use App\Http\Controllers\API\XenditController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,10 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::prefix('member')->name('member.')->group(function () {
         Route::post('register', [MemberController::class, 'register'])->name('register');
+    });
+
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::post('/check-profile', [UserController::class, 'checkProfile'])->name('check.profile');
     });
 
     Route::resource('webinar', WebinarController::class);

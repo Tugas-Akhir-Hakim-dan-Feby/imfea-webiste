@@ -53,4 +53,14 @@ class Membership extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    /**
+     * Get the workType associated with the Membership
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function workType(): HasOne
+    {
+        return $this->hasOne(WorkType::class, 'id', 'work_type_id');
+    }
 }

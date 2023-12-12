@@ -22,6 +22,7 @@ class Webinar extends Model
         "description",
         "url",
         "status",
+        "thumbnail",
         "activity_date",
         "activity_time",
     ];
@@ -29,6 +30,11 @@ class Webinar extends Model
     protected $hidden = [
         "user_id"
     ];
+
+    public static function pathImageThumbnail()
+    {
+        return 'assets/images/webinar/thumbnail/' . date('dmY');
+    }
 
     public function getImageAttribute()
     {

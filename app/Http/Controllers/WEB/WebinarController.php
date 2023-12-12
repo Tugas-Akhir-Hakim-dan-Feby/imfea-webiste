@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class WebinarController extends Controller
@@ -112,6 +113,17 @@ class WebinarController extends Controller
         ]);
 
         try {
+            $file = $request->file('thumbnail_webinar');
+            $filename = $file->getClientOriginalName();
+            $filename = time() . '_' . $filename;
+            $filename = Str::slug($filename, "_");
+
+            $file->move(public_path(Webinar::pathImageThumbnail()), $filename);
+
+            $request->merge([
+                "thumbnail" => Webinar::pathImageThumbnail() . '/' . $filename
+            ]);
+
             $webinar = $this->webinar->create($request->all());
 
             DB::commit();
@@ -189,6 +201,22 @@ class WebinarController extends Controller
         ]);
 
         try {
+            if ($request->hasFile('thumbnail_webinar')) {
+                $path = str_replace(url('/'), '', $webinar->thumbnail);
+                File::delete(public_path($path));
+
+                $file = $request->file('thumbnail_webinar');
+                $filename = $file->getClientOriginalName();
+                $filename = time() . '_' . $filename;
+                $filename = Str::slug($filename, "_");
+
+                $file->move(public_path(Webinar::pathImageThumbnail()), $filename);
+
+                $request->merge([
+                    "thumbnail" => Webinar::pathImageThumbnail() . '/' . $filename
+                ]);
+            }
+
             $webinar->update($request->all());
 
             DB::commit();

@@ -34,7 +34,7 @@
 
         @foreach ($webinars as $webinar)
             <x-col lg="3" md="4" sm="6" xl="3" class="mb-4">
-                <x-card class="h-100 shadow-lg" :image="route('web.webinar.background', $webinar)">
+                <x-card class="h-100 shadow-lg" :image="$webinar->thumbnail ? url($webinar->thumbnail) : route('web.webinar.background', $webinar)">
                     <x-slot:body class="h-100 text-dark">
                         <h4 class="card-title">{{ $webinar->title }}</h4>
                         <p class="small m-0">

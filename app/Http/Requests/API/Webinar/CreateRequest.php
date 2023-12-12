@@ -29,6 +29,7 @@ class CreateRequest extends FormRequest
             "title" => "required",
             "description" => "required",
             "url" => "required|url",
+            "thumbnail_webinar" => "image|mimes:png,jpg,jpeg",
             "activity_time" => "required",
             "activity_date" => "required|date"
         ];
@@ -40,6 +41,7 @@ class CreateRequest extends FormRequest
             "title" => "judul webinar",
             "description" => "deskripsi webinar",
             "url" => "url webinar",
+            "thumbnail_webinar" => "thumbnail webinar",
             "activity_time" => "waktu kegiatan",
             "activity_date" => "tanggal kegiatan"
         ];

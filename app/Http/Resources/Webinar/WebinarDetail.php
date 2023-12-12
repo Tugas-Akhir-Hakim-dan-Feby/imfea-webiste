@@ -21,7 +21,7 @@ class WebinarDetail extends JsonResource
             "description" => $this->description,
             "url" => url('webinar/meet/' . $this->slug),
             "status" => $this->status,
-            "thumbnail" => $this->image,
+            "thumbnail" => url($this->thumbnail),
             "author" => $this->author->name,
             "activity_date" => $this->activity_date,
             "activity_time" => $this->activity_time,

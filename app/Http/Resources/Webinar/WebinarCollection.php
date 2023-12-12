@@ -24,7 +24,7 @@ class WebinarCollection extends ResourceCollection
                 "description" => $webinar->description,
                 "url" => url('webinar/meet/' . $webinar->slug),
                 "status" => $webinar->status,
-                "thumbnail" => $webinar->image,
+                "thumbnail" => url($webinar->thumbnail),
                 "author" => $webinar->author->name,
                 "activity_date" => $webinar->activity_date,
                 "activity_time" => $webinar->activity_time,

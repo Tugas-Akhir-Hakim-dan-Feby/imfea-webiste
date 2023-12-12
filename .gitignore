@@ -9,6 +9,7 @@
 /public/assets/images/cv
 /public/assets/images/pas_photo
 /public/assets/images/training
+/public/assets/images/webinar
 /storage/*.key
 /vendor
 .env

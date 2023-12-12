@@ -18,7 +18,8 @@
         </x-alert>
     @endif
 
-    <form action="{{ route('web.webinar.store') }}" method="post" class="needs-validation" novalidate>
+    <form action="{{ route('web.webinar.store') }}" method="post" enctype="multipart/form-data" class="needs-validation"
+        novalidate>
         @csrf
         <x-row>
             <x-col lg="7" xl="7" md="7">
@@ -29,6 +30,7 @@
             </x-col>
             <x-col lg="5" xl="5" md="5">
                 <x-card>
+                    <x-input label="Thumbnail Webinar" id="thumbnail_webinar" required type="file" />
                     <x-input label="URL Webinar" id="url" required type="url" />
                     <x-row>
                         <x-col lg="6" xl="6" md="6" sm="6">
