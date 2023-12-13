@@ -42,6 +42,8 @@ class MeController extends Controller
             $data['phone'] = $user->membership->phone;
             $data['address'] = $user->membership->address;
             $data['work_type'] = $user->membership->workType;
+            $data['pas_photo'] = url($user->membership->pas_photo);
+            $data['cv'] = url($user->membership->cv);
         }
 
         return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "selamat data pribadi anda berhasil diambil!", MessageFixer::HTTP_OK, $data);

@@ -72,6 +72,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('/check-profile', [UserController::class, 'checkProfile'])->name('check.profile');
+        Route::post('/update-profile', [UserController::class, 'updateProfile'])->name('update.profile');
     });
 
     Route::resource('webinar', WebinarController::class);
