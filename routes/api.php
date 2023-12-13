@@ -8,6 +8,7 @@ use App\Http\Controllers\API\MemberController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\Region\CityController;
+use App\Http\Controllers\API\Region\ProvinceController;
 use App\Http\Controllers\API\WebinarController;
 use App\Http\Controllers\API\XenditController;
 use App\Http\Controllers\API\UserController;
@@ -42,6 +43,11 @@ Route::prefix('auth')->name('api.auth.')->group(function () {
 });
 
 Route::prefix('region')->name('api.region.')->group(function () {
+    Route::prefix('province')->name('province.')->group(function () {
+        Route::get('/', [ProvinceController::class, 'index'])
+            ->name('index');
+    });
+
     Route::prefix('city')->name('city.')->group(function () {
         Route::get('/{provinceId}', [CityController::class, 'index'])
             ->name('index');

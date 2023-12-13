@@ -31,6 +31,7 @@ class MeController extends Controller
         ];
 
         if ($data['is_member']) {
+            $data['member_id'] = str_pad(decbin($user->membership->id), 4, '0', STR_PAD_LEFT);
             $data['nik'] = $user->membership->nin;
             $data['gender'] = $user->membership->gender;
             $data['place_birth'] = $user->membership->place_birth;
@@ -44,6 +45,8 @@ class MeController extends Controller
             $data['work_type'] = $user->membership->workType;
             $data['pas_photo'] = url($user->membership->pas_photo);
             $data['cv'] = url($user->membership->cv);
+            $data['created_at'] = $user->membership->created_at;
+            $data['updated_at'] = $user->membership->updated_at;
         }
 
         return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "selamat data pribadi anda berhasil diambil!", MessageFixer::HTTP_OK, $data);
