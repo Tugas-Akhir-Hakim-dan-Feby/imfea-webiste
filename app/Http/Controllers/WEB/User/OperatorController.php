@@ -4,10 +4,14 @@ namespace App\Http\Controllers\WEB\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\WEB\Operator\CreateRequest;
 use App\Http\Facades\MessageFixer;
 use App\Models\User;
 use App\Models\Role;
+use App\Http\Requests\WEB\User\Operator\CreateRequest;
+use App\Http\Requests\WEB\User\Operator\UpdateRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Enums\RoleEnum;
 use Illuminate\Support\Str;
 
 class OperatorController extends Controller
@@ -17,97 +21,101 @@ class OperatorController extends Controller
 
     protected $user;
 
-    public function __construct(User $users)
+    public function __construct(User $user)
     {
-        $this->user = $users;
+        $this->user = $user;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-    $user = $this->user->whereHas('roles', function ($query) {
-        $query->where('id', User::OPERATOR);
-    });
+        $users = $this->user->whereHas('roles', function ($query) {
+            $query->where('id', User::OPERATOR);
+        })->get();
 
-    if (auth()->user()->hasRole(User::OPERATOR)) {
-        $user->where('user_id', auth()->user()->id);
+        $data = [
+            'title' => "Pengguna Operator",
+            'page' => User::OPERATOR,
+            'users' => $users,
+        ];
+
+        return view('user.operator.index', $data);
     }
 
-    $user = $user->paginate(self::PER_PAGE);
-
-    $data = [
-        'title' => "Operator",
-        'operator' => $user
-    ];
-
-    return view('user.operator.admin_operator', $data);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
 
         $data = [
-            "title" => "Tambah Operator Baru",
+            "title" => "Tambah Baru",
+            "user" => null,
+            "action" => route('web.user.operator.store')
         ];
 
-        return view('user.operator.create', $data);
+        return view('user.operator.form', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         $request->merge([
-            "slug" => Str::slug($request->title . "-" . Str::random(16)),
+            "password" => Hash::make($request->password)
         ]);
-        try{
-            $user = User::Create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt('Password123!'),
-            ]);
-            $operator = $this->user->create($request->all());
-            $user->assignRole(Role::findById(User::OPERATOR, 'web'));
-            return MessageFixer::successMessage("selamat data `$operator->title` berhasil disimpan.", route('web.operator.index'));
-        }catch(\Exception $e){
-            return back();
+
+        try {
+            $user = $this->user->create($request->all());
+            $user->assignRole(Role::findById($this->user::OPERATOR, 'web'));
+
+            DB::commit();
+            return MessageFixer::successMessage("selamat data `$user->name` berhasil disimpan.", route('web.user.operator.index'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.user.operator.create'));
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(User $operator)
     {
-        //
+        $data = [
+            "title" => "Edit Pengguna",
+            "user" => $operator,
+            "action" => route('web.user.operator.update', $operator)
+        ];
+
+        return view("user.operator.form", $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, User $operator)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $operator->update($request->all());
+
+            DB::commit();
+            return MessageFixer::successMessage("selamat data `$operator->name` berhasil disimpan.", route('web.user.operator.index'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.user.operator.edit', $operator));
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(User $operator)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $operator->delete();
+
+            DB::commit();
+            return MessageFixer::successMessage("selamat data `$operator->name` berhasil dihapus.", route('web.user.operator.index'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return MessageFixer::dangerMessage($th->getMessage(), route('web.user.operator.index'));
+        }
     }
 }

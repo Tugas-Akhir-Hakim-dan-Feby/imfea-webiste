@@ -17,6 +17,9 @@ use App\Http\Controllers\WEB\ProfileController;
 use App\Http\Controllers\WEB\TopicController;
 use App\Http\Controllers\WEB\TrainingController;
 use App\Http\Controllers\WEB\WebinarController;
+use App\Http\Controllers\WEB\User\OperatorController;
+use App\Http\Controllers\WEB\User\AdminAppController;
+use App\Http\Controllers\WEB\User\MemberController as MembershipController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -131,6 +134,15 @@ Route::middleware(['auth', 'check.membership'])
         Route::post('training/register/{training}', [TrainingController::class, 'register'])
             ->name('training.register');
         Route::resource('training', TrainingController::class);
+
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::resource('admin-app', AdminAppController::class);
+            Route::resource('operator', OperatorController::class);
+
+            Route::prefix('member')->name('member.')->group(function () {
+                Route::get('/', [MembershipController::class, 'index'])->name('index');
+            });
+        });
 
         Route::prefix('profile')->name('profile.')->group(function () {
             Route::get('/', [ProfileController::class, 'index'])

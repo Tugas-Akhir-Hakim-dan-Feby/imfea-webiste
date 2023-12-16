@@ -8,6 +8,11 @@
 <script src="{{ asset('assets/js/pages/demo.dashboard.js') }}"></script>
 <script src="{{ asset('assets/vendor/jquery-validation/dist/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/sweetalert2/dist/sweetalert2.all.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('assets/js/pages/demo.datatable-init.js') }}"></script>
 
 @stack('js')
 

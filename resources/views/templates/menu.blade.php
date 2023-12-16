@@ -35,6 +35,13 @@
             </x-link>
         </li>
 
+        <li class="side-nav-item">
+            <x-link route="web.user.admin-app.index" class="side-nav-link">
+                <x-icon name="dripicons-user" />
+                <span> Pengguna </span>
+            </x-link>
+        </li>
+
     </ul>
 
     <div class="clearfix"></div>

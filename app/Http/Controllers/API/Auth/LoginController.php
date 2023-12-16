@@ -37,6 +37,11 @@ class LoginController extends Controller
         try {
             $token = $user->createToken('api', $role->toArray())->plainTextToken;
 
+            $user->is_member = false;
+            if ($user->invoice) {
+                $user->is_member = true;
+            }
+
             DB::commit();
             return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "selamat anda berhasil login!", MessageFixer::HTTP_OK, $user, true, $token);
         } catch (\Throwable $th) {

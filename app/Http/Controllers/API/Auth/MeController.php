@@ -30,7 +30,7 @@ class MeController extends Controller
             "is_member" => $user->invoice ? true : false,
         ];
 
-        if ($data['is_member']) {
+        if ($user->membership) {
             $data['member_id'] = str_pad(decbin($user->membership->id), 4, '0', STR_PAD_LEFT);
             $data['nik'] = $user->membership->nin;
             $data['gender'] = $user->membership->gender;

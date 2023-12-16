@@ -16,9 +16,9 @@
     font-display: swap;
 }
 
-body.authentication-bg {
+/* body.authentication-bg {
     background-image: url("../images/bg-auth.jpg");
-}
+} */
 
 .disable-link {
     pointer-events: none;
