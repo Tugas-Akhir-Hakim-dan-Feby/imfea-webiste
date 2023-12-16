@@ -81,6 +81,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
         Route::post('/update-profile', [UserController::class, 'updateProfile'])->name('update.profile');
     });
 
+    Route::post('webinar/register/{id}', [WebinarController::class, 'register'])->name('webinar.register');
     Route::resource('webinar', WebinarController::class);
 
     Route::put('news/update-status/{news}', [NewsController::class, 'updateStatus'])

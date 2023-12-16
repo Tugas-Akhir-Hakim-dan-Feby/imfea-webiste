@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('webinar_participants', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->foreignIdFor(Webinar::class)->references('id')->on('webinars')->cascadeOnDelete();
             $table->foreignIdFor(User::class)->references('id')->on('users')->cascadeOnDelete();
         });

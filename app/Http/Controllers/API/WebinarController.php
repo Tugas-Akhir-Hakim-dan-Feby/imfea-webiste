@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\MessageFixer;
+use App\Http\Facades\Filters\Webinar\ShowByAuth;
 use App\Http\Requests\API\Webinar\CreateRequest;
 use App\Http\Resources\Webinar\WebinarCollection;
 use App\Http\Resources\Webinar\WebinarDetail;
@@ -26,7 +27,9 @@ class WebinarController extends Controller
     {
         $webinars = app(Pipeline::class)
             ->send($this->webinar->query())
-            ->through([])
+            ->through([
+                ShowByAuth::class,
+            ])
             ->thenReturn()
             ->paginate($request->per_page);
 
@@ -47,6 +50,33 @@ class WebinarController extends Controller
 
             DB::commit();
             return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "selamat data `$webinar->title` berhasil disimpan.", MessageFixer::HTTP_CREATED, $webinar);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return MessageFixer::customApiMessage(MessageFixer::ERROR, $th->getMessage(), MessageFixer::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function register($id)
+    {
+        DB::beginTransaction();
+
+        $webinar = $this->webinar->find($id);
+
+        if (!$webinar) {
+            return MessageFixer::customApiMessage(MessageFixer::WARNING, "maaf data tidak tersedia!", MessageFixer::HTTP_NOT_FOUND);
+        }
+
+        if ($webinar->webinarParticipant) {
+            return MessageFixer::customApiMessage(MessageFixer::WARNING, "maaf anda sudah terdaftar di webinar ini!", MessageFixer::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $webinar->participant()->create([
+                "user_id" => auth()->user()->id
+            ]);
+
+            DB::commit();
+            return MessageFixer::customApiMessage(MessageFixer::SUCCESS, "Selamat anda berhasil terdaftar di `$webinar->title`.", MessageFixer::HTTP_CREATED, $webinar);
         } catch (\Throwable $th) {
             DB::rollback();
             return MessageFixer::customApiMessage(MessageFixer::ERROR, $th->getMessage(), MessageFixer::HTTP_INTERNAL_SERVER_ERROR);
