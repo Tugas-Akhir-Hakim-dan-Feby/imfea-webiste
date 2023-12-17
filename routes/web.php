@@ -17,8 +17,10 @@ use App\Http\Controllers\WEB\ProfileController;
 use App\Http\Controllers\WEB\TopicController;
 use App\Http\Controllers\WEB\TrainingController;
 use App\Http\Controllers\WEB\WebinarController;
+use App\Http\Controllers\WEB\RegionalController;
 use App\Http\Controllers\WEB\User\OperatorController;
 use App\Http\Controllers\WEB\User\AdminAppController;
+use App\Http\Controllers\WEB\User\KorwilController;
 use App\Http\Controllers\WEB\User\MemberController as MembershipController;
 use Illuminate\Support\Facades\Route;
 
@@ -135,9 +137,14 @@ Route::middleware(['auth', 'check.membership'])
             ->name('training.register');
         Route::resource('training', TrainingController::class);
 
+        Route::resource('regional', RegionalController::class);
+
         Route::prefix('user')->name('user.')->group(function () {
             Route::resource('admin-app', AdminAppController::class);
             Route::resource('operator', OperatorController::class);
+
+            Route::get('korwil/clear', [KorwilController::class, 'clear'])->name('korwil.clear');
+            Route::resource('korwil', KorwilController::class);
 
             Route::prefix('member')->name('member.')->group(function () {
                 Route::get('/', [MembershipController::class, 'index'])->name('index');

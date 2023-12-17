@@ -7,5 +7,7 @@
     color="outline-primary {{ $page == User::ADMIN_APP ? 'active' : '' }}">Admin App</x-button>
 <x-button route="web.user.operator.index" size="sm"
     color="outline-primary {{ $page == User::OPERATOR ? 'active' : '' }}">Operator</x-button>
+<x-button route="web.user.korwil.clear" size="sm"
+    color="outline-primary {{ $page == User::KORWIL ? 'active' : '' }}">Koordinator Wilayah</x-button>
 <x-button route="web.user.operator.index" size="sm"
     color="outline-primary {{ $page == User::MEMBER ? 'active' : '' }}">Member Aplikasi</x-button>
