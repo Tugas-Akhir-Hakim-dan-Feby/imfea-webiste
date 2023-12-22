@@ -25,6 +25,11 @@
     cursor: no-drop;
 }
 
+.side-nav-link-menu1{
+    color: #9A031E;
+    padding: 15px;
+}
+
 @media screen and (max-width: 576px) {
     .table-sm thead {
         display: none;
@@ -54,3 +59,4 @@
         font-weight: 600;
     }
 }
+
