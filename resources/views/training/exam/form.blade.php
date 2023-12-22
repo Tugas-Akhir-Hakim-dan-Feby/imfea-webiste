@@ -27,18 +27,12 @@
         </div>
     @endif
 
-    <form action="{{ route('web.exam.store', $training) }}" method="post" enctype="multipart/form-data"
-        class="needs-validation" novalidate>
+    <form action="{{ $action }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         @csrf
+        @if ($exam)
+            @method('put')
+        @endif
         <x-card>
-            <x-select label="Topik Ujian" id="topic_id" required>
-                <option selected disabled />
-                @foreach ($training->topicExams as $topic)
-                    <option value="{{ $topic->id }}"
-                        {{ old('topic_id', $exam->topic_id ?? '') == $topic->id ? 'selected' : '' }}>
-                        {{ $topic->title }}</option>
-                @endforeach
-            </x-select>
             <x-textarea label="Pertanyaan" id="question" required :value="old('question', $exam->question ?? '')" />
         </x-card>
 

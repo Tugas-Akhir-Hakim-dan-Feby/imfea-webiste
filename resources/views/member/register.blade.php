@@ -49,7 +49,7 @@
                         </x-select>
                     </x-col>
                     <x-col lg="6" md="6" xl="6" sm="6">
-                        <x-select label="Provinsi" id="province_id" required>
+                        <x-select label="Provinsi" id="province_id" required data-toggle="select2" class="select2">
                             <option value="" selected disabled></option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province['id'] }}">{{ $province['name'] }}</option>
@@ -57,7 +57,8 @@
                         </x-select>
                     </x-col>
                     <x-col lg="6" md="6" xl="6" sm="6">
-                        <x-select label="Kota / Kabupaten" disabled id="city_id" required>
+                        <x-select label="Kota / Kabupaten" disabled id="city_id" required data-toggle="select2"
+                            class="select2">
                             <option value="" selected disabled></option>
                         </x-select>
                     </x-col>

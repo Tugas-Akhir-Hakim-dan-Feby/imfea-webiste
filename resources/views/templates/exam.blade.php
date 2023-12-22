@@ -308,7 +308,6 @@
                                 clearInterval(interval);
 
                                 // window.location.href =
-                                //     "{{ route('web.training.course.slug.exam.expired', $training->slug) }}"
                             }
                         }, 1000);
                     },

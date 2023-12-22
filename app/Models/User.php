@@ -79,4 +79,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Invoice::class, 'user_id', 'id');
     }
+
+    public function korwilAssign(): HasOne
+    {
+        return $this->hasOne(KorwilAssign::class, 'user_id', 'id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Facades\MessageFixer;
 use App\Http\Requests\WEB\Training\CreateRequest;
 use App\Http\Requests\WEB\Training\UpdateRequest;
+use App\Models\Role;
 use App\Models\Training;
 use App\Models\TrainingParticipant;
 use Illuminate\Http\Request;
@@ -165,7 +166,7 @@ class TrainingController extends Controller
             ]);
 
             DB::commit();
-            return MessageFixer::successMessage("data ujian `".$trainingParticipant->user->name."` berhasil direset.", route('web.training.participant', $training));
+            return MessageFixer::successMessage("data ujian `" . $trainingParticipant->user->name . "` berhasil direset.", route('web.training.participant', $training));
         } catch (\Throwable $th) {
             DB::rollBack();
             return MessageFixer::dangerMessage($th->getMessage(), route('web.training.index'));
@@ -174,7 +175,7 @@ class TrainingController extends Controller
 
     public function show(Training $training)
     {
-        if ($training->topics->count() < 1 || $training->topicMaterials[0]->courses->count() < 1) {
+        if (auth()->user()->hasRole(Role::MEMBER) && ($training->topics->count() < 1 || $training->topicMaterials[0]->courses->count() < 1)) {
             return MessageFixer::dangerMessage("Mohon maaf pelatihan belum siap dimulai!", route('web.training.index'));
         }
 
