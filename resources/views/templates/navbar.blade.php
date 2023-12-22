@@ -19,11 +19,13 @@
         </a>
 
         <ul class="list-unstyled topbar-menu float-end mb-0">
-            <li class="notification-list">
-                <x-link class="nav-link end-bar-toggle" route="web.invoice.index">
-                    <x-icon name="dripicons-cart" class="noti-icon" />
-                </x-link>
-            </li>
+            @if (auth()->user()->hasRole(App\Models\Role::MEMBER))
+                <li class="notification-list">
+                    <x-link class="nav-link end-bar-toggle" route="web.invoice.index">
+                        <x-icon name="dripicons-cart" class="noti-icon" />
+                    </x-link>
+                </li>
+            @endif
             <li class="notification-list dropdown">
                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown"
                     id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">

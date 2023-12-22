@@ -23,6 +23,7 @@ use App\Http\Controllers\WEB\User\AdminAppController;
 use App\Http\Controllers\WEB\User\KorwilController;
 use App\Http\Controllers\WEB\User\MemberController as MembershipController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Number;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('membercard/{slug}', MembercardController::class)
     ->name('web.membercard');
+
+Route::get('test', function () {
+    return Number::format('100000', locale: 'de');
+})->name('test');
 
 Route::middleware(['guest'])
     ->prefix('auth')
@@ -118,6 +123,14 @@ Route::middleware(['auth', 'check.membership'])
 
         Route::resource('training/{training}/topic', TopicController::class);
 
+        Route::post('training/{trainingSlug}/learn/course', [CourseController::class, 'processFinished'])
+            ->name('training.course.slug.finished');
+        Route::get('training/{trainingSlug}/learn/course/exam', [CourseController::class, 'exam'])
+            ->name('training.course.slug.exam');
+        Route::get('training/{trainingSlug}/learn/course/exam-preview', [CourseController::class, 'examPreview'])
+            ->name('training.course.slug.exam.preview');
+        Route::post('training/{trainingSlug}/learn/course/exam-answer', [CourseController::class, 'saveAnswer'])
+            ->name('training.course.slug.exam.answer');
         Route::get('training/{trainingSlug}/learn/course/{courseSlug}', [CourseController::class, 'showSlug'])
             ->name('training.course.slug');
         Route::post('training/{trainingSlug}/learn/course/{courseSlug}', [CourseController::class, 'processSubmitted'])
@@ -125,6 +138,9 @@ Route::middleware(['auth', 'check.membership'])
 
         Route::resource('training/{training}/course', CourseController::class);
 
+        Route::get('training/{training}/check-time/{id}', [ExamController::class, 'checkTime'])
+            ->name('exam.check.time');
+        Route::get('training/{training}/exam/activate', [ExamController::class, 'activate'])->name('exam.training');
         Route::resource('training/{training}/exam', ExamController::class);
 
         Route::get('training/all', [TrainingController::class, 'all'])
@@ -144,6 +160,7 @@ Route::middleware(['auth', 'check.membership'])
             Route::resource('operator', OperatorController::class);
 
             Route::get('korwil/clear', [KorwilController::class, 'clear'])->name('korwil.clear');
+            Route::get('korwil/to/{id}', [KorwilController::class, 'toKorwil'])->name('korwil.to');
             Route::resource('korwil', KorwilController::class);
 
             Route::prefix('member')->name('member.')->group(function () {

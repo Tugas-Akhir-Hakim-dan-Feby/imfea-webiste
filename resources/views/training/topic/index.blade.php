@@ -27,7 +27,7 @@
     <x-modal id="addNewTopic" title="Tambah Topik Baru" form="{{ route('web.topic.store', ['training' => $training]) }}">
         <x-input label="Judul Topik" id="title" value="{{ old('title') }}" required />
 
-        <x-checkbox id="is_exam" label="Topik untuk ujian" value="1" />
+        {{-- <x-checkbox id="is_exam" label="Topik untuk ujian" value="1" /> --}}
 
         <x-slot:footer class="d-flex justify-content-between">
             <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -37,7 +37,7 @@
     <x-modal id="editTopic" title="Edit Topik" form="{{ route('web.topic.store', ['training' => $training]) }}">
         @method('put')
         <x-input label="Judul Topik" id="title" value="{{ old('title') }}" required />
-        <x-checkbox id="is_exam" label="Topik untuk ujian" value="1" disabled />
+        {{-- <x-checkbox id="is_exam" label="Topik untuk ujian" value="1" disabled /> --}}
 
         <x-slot:footer class="d-flex justify-content-between">
             <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>

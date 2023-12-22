@@ -35,12 +35,14 @@
             </x-link>
         </li>
 
-        <li class="side-nav-item">
-            <x-link route="web.user.admin-app.index" class="side-nav-link">
-                <x-icon name="dripicons-user" />
-                <span> Pengguna </span>
-            </x-link>
-        </li>
+        @if (auth()->user()->hasRole(App\Models\Role::ADMIN_APP))
+            <li class="side-nav-item">
+                <x-link route="web.user.admin-app.index" class="side-nav-link">
+                    <x-icon name="dripicons-user" />
+                    <span> Pengguna </span>
+                </x-link>
+            </li>
+        @endif
 
     </ul>
 
